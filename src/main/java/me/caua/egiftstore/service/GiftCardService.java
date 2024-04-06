@@ -11,7 +11,7 @@ import java.util.List;
 public interface GiftCardService {
 
     GiftCardResponseDTO create(@Valid GiftCardDTO giftCardDTO);
-    void update(Long id, @Valid GiftCardDTO produtoDTO);
+    void update(Long id, @Valid GiftCardDTO giftCardDTO);
     void delete(Long id);
     GiftCardResponseDTO findById(Long id);
     List<GiftCardResponseDTO> findByName(String name);

@@ -9,6 +9,7 @@ import me.caua.egiftstore.enums.GiftState;
 public record GiftCodeDTO(
         @NotBlank(message = "O código do gift não pode ser nulo ou vazio.") @Size(max = 150, message = "O tamanho máximo do gift é 150 caracteres.")
         String giftCode,
-        GiftState giftState
+        GiftState giftState,
+        Long produtoId
 ) {
 }
