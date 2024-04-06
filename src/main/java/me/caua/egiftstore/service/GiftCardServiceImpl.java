@@ -33,7 +33,7 @@ public class GiftCardServiceImpl implements GiftCardService {
         giftCard.setVisible(giftCardDTO.visible());
         giftCard.setImages(giftCardDTO.images().stream().map(Image::valueOf).toList());
         giftCard.setGiftCodes(giftCardDTO.giftCodes().stream()
-                .map(giftCodeDTO -> new GiftCode(giftCodeDTO.giftCode(), giftCodeDTO.giftState(), giftCard)).toList());
+                .map(giftCodeDTO -> new GiftCode(giftCodeDTO.giftCode(), giftCodeDTO.giftState())).toList());
 
         // to-do giftcompany
 
@@ -55,7 +55,7 @@ public class GiftCardServiceImpl implements GiftCardService {
         giftCard.setImages(giftCardDTO.images().stream().map(Image::valueOf).toList());
 
         giftCard.setGiftCodes(giftCardDTO.giftCodes().stream()
-                .map(giftCodeDTO -> new GiftCode(giftCodeDTO.giftCode(), giftCodeDTO.giftState(), giftCard)).toList());
+                .map(giftCodeDTO -> new GiftCode(giftCodeDTO.giftCode(), giftCodeDTO.giftState())).toList());
 
         // to-do giftcompany
     }

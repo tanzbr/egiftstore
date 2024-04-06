@@ -25,10 +25,9 @@ public class GiftCode {
         this.giftCard = giftCard;
     }
 
-    public GiftCode(String code, GiftState giftState, GiftCard giftCard) {
+    public GiftCode(String code, GiftState giftState) {
         this.code = code;
         this.giftState = giftState;
-        this.giftCard = giftCard;
     }
 
     public GiftCode() {
