@@ -55,6 +55,8 @@ public class GiftCodeServiceImpl implements GiftCodeService{
     @Transactional
     public void delete(Long id) {
         validateGiftCodeExists(id);
+        // to-do tratar exceção de foreign key
+
         giftCodeRepository.deleteById(id);
     }
 
