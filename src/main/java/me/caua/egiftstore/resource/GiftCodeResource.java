@@ -26,11 +26,11 @@ public class GiftCodeResource {
     }
 
     @GET
-    @Path("/search/produto/{id}")
-    public Response findByProduto(@PathParam("id") Long id) {
+    @Path("/search/giftcard/{id}")
+    public Response findByGiftCard(@PathParam("id") Long id) {
         return Response
                 .status(Response.Status.OK)
-                .entity(giftCodeService.findByProduto(id))
+                .entity(giftCodeService.findByGiftCard(id))
                 .build();
     }
 

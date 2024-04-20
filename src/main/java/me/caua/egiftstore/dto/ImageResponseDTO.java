@@ -1,6 +1,5 @@
 package me.caua.egiftstore.dto;
 
-import me.caua.egiftstore.model.GiftCard;
 import me.caua.egiftstore.model.Image;
 
 public record ImageResponseDTO(

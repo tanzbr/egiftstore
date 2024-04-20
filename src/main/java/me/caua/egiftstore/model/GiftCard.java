@@ -5,11 +5,8 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class GiftCard {
+public class GiftCard extends DefaultEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column(length = 60, nullable = false)
     private String name;
     @Column(length = 5000)
@@ -22,19 +19,11 @@ public class GiftCard {
     private Boolean visible;
     @OneToMany(cascade=CascadeType.ALL)
     private List<GiftCode> giftCodes;
-    @OneToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "giftcompany_id")
     private GiftCompany giftCompany;
     @OneToMany(cascade=CascadeType.ALL)
     private List<Image> images;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

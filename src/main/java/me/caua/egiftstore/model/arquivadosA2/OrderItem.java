@@ -1,15 +1,12 @@
-package me.caua.egiftstore.model;
+package me.caua.egiftstore.model.arquivadosA2;
 
 import jakarta.persistence.*;
-
-import java.time.LocalDateTime;
+import me.caua.egiftstore.model.DefaultEntity;
+import me.caua.egiftstore.model.GiftCard;
 
 @Entity
-public class OrderItem {
+public class OrderItem extends DefaultEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column()
     private Double unitPrice;
     @Column()

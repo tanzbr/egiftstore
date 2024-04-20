@@ -1,11 +1,19 @@
 package me.caua.egiftstore.dto;
 
-import me.caua.egiftstore.model.Image;
+import me.caua.egiftstore.model.GiftCompany;
 
 public record GiftCompanyResponseDTO(
+        Long id,
         String name,
         String cnpj,
-        Image image
+        ImageResponseDTO logo
 ) {
-
+    public static GiftCompanyResponseDTO valueOf(GiftCompany giftCompany) {
+        return new GiftCompanyResponseDTO(
+                giftCompany.getId(),
+                giftCompany.getName(),
+                giftCompany.getCnpj(),
+                ImageResponseDTO.valueOf(giftCompany.getLogo())
+        );
+    }
 }

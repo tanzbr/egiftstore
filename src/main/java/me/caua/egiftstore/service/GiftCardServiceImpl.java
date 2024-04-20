@@ -11,6 +11,8 @@ import me.caua.egiftstore.model.GiftCode;
 import me.caua.egiftstore.model.Image;
 import me.caua.egiftstore.repository.GiftCardRepository;
 import me.caua.egiftstore.repository.GiftCodeRepository;
+import me.caua.egiftstore.repository.GiftCompanyRepository;
+import me.caua.egiftstore.validation.ValidationException;
 
 import java.util.List;
 
@@ -20,11 +22,15 @@ public class GiftCardServiceImpl implements GiftCardService {
     @Inject
     public GiftCardRepository giftCardRepository;
     @Inject
+    public GiftCompanyRepository giftCompanyRepository;
+    @Inject
     public GiftCodeRepository giftCodeRepository;
 
     @Override
     @Transactional
     public GiftCardResponseDTO create(@Valid GiftCardDTO giftCardDTO) {
+        validateGiftCompanyExists(giftCardDTO.companyId());
+
         GiftCard giftCard = new GiftCard();
         giftCard.setName(giftCardDTO.name());
         giftCard.setDescription(giftCardDTO.description());
@@ -33,9 +39,21 @@ public class GiftCardServiceImpl implements GiftCardService {
         giftCard.setVisible(giftCardDTO.visible());
         giftCard.setImages(giftCardDTO.images().stream().map(Image::valueOf).toList());
         giftCard.setGiftCodes(giftCardDTO.giftCodes().stream()
-                .map(giftCodeDTO -> new GiftCode(giftCodeDTO.giftCode(), giftCodeDTO.giftState())).toList());
+                .map(giftCodeDTO -> {
+                    GiftCode giftCode;
+                    if (giftCodeRepository.findByCode(giftCodeDTO.giftCode()) == null) {
+                        giftCode = new GiftCode();
+                    } else {
+                        giftCode = giftCodeRepository.findByCode(giftCodeDTO.giftCode());
+                    }
 
-        // to-do giftcompany
+                    giftCode.setCode(giftCodeDTO.giftCode());
+                    giftCode.setGiftState(giftCodeDTO.giftState());
+                    giftCode.setGiftCard(giftCard);
+
+                    return giftCode;
+                }).toList());
+        giftCard.setGiftCompany(giftCompanyRepository.findById(giftCardDTO.companyId()));
 
         giftCardRepository.persist(giftCard);
 
@@ -45,6 +63,9 @@ public class GiftCardServiceImpl implements GiftCardService {
     @Override
     @Transactional
     public void update(Long id, @Valid GiftCardDTO giftCardDTO) {
+        validateGiftCompanyExists(giftCardDTO.companyId());
+        validateGiftCardExists(id);
+
         GiftCard giftCard = giftCardRepository.findById(id);
 
         giftCard.setName(giftCardDTO.name());
@@ -53,22 +74,23 @@ public class GiftCardServiceImpl implements GiftCardService {
         giftCard.setTags(giftCardDTO.tags());
         giftCard.setVisible(giftCardDTO.visible());
         giftCard.setImages(giftCardDTO.images().stream().map(Image::valueOf).toList());
+        giftCard.setGiftCompany(giftCompanyRepository.findById(giftCardDTO.companyId()));
 
         giftCard.setGiftCodes(giftCardDTO.giftCodes().stream()
-                .map(giftCodeDTO -> new GiftCode(giftCodeDTO.giftCode(), giftCodeDTO.giftState())).toList());
-
-        // to-do giftcompany
+                .map(giftCodeDTO -> new GiftCode(giftCodeDTO.giftCode(), giftCodeDTO.giftState(), giftCard)).toList());
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
+        validateGiftCardExists(id);
         giftCardRepository.deleteById(id);
     }
 
     @Override
     public GiftCardResponseDTO findById(Long id) {
-        return null;
+        validateGiftCardExists(id);
+        return GiftCardResponseDTO.valueOf(giftCardRepository.findById(id));
     }
 
     @Override
@@ -87,5 +109,13 @@ public class GiftCardServiceImpl implements GiftCardService {
                 .toList();
     }
 
+    public void validateGiftCompanyExists(Long companyId) {
+        if (giftCompanyRepository.findById(companyId) == null)
+            throw new ValidationException("companyId", "Não existe uma empresa com este ID.");
+    }
 
+    public void validateGiftCardExists(Long id) {
+        if (giftCardRepository.findById(id) == null)
+            throw new ValidationException("id", "GiftCard não encontrado.");
+    }
 }

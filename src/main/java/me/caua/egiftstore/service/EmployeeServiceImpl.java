@@ -1,0 +1,125 @@
+package me.caua.egiftstore.service;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
+import me.caua.egiftstore.dto.EmployeeDTO;
+import me.caua.egiftstore.dto.EmployeeResponseDTO;
+import me.caua.egiftstore.model.Employee;
+import me.caua.egiftstore.model.User;
+import me.caua.egiftstore.repository.EmployeeRepository;
+import me.caua.egiftstore.repository.UserRepository;
+import me.caua.egiftstore.validation.ValidationException;
+
+import java.util.List;
+
+@ApplicationScoped
+public class EmployeeServiceImpl implements EmployeeService {
+
+    @Inject
+    public EmployeeRepository employeeRepository;
+    @Inject
+    public UserRepository userRepository;
+    @Override
+    @Transactional
+    public EmployeeResponseDTO create(@Valid EmployeeDTO employeeDTO) {
+        validateEmployeeExistsByCpf(employeeDTO.user().cpf());
+
+        Employee employee = new Employee();
+        employee.setSalary(employeeDTO.salary());
+        employee.setRole(employeeDTO.role());
+        employee.setContractDate(employeeDTO.contractDate());
+        employee.setWeeklyHours(employeeDTO.weeklyHours());
+
+        User user;
+        if (!checkUserExists(employeeDTO.user().cpf())) {
+            user = new User();
+        } else {
+            user = userRepository.findByCpf(employeeDTO.user().cpf());
+        }
+        user.setName(employeeDTO.user().name());
+        user.setCpf(employeeDTO.user().cpf());
+        user.setEmail(employeeDTO.user().email());
+        user.setPassword(employeeDTO.user().password());
+        user.setBirthDate(employeeDTO.user().birthDate());
+        user.setTwoFactor(employeeDTO.user().twoFactor());
+        user.setUsername(employeeDTO.user().username());
+        employee.setUser(user);
+
+        employeeRepository.persist(employee);
+
+        return EmployeeResponseDTO.valueOf(employee);
+    }
+
+    @Override
+    @Transactional
+    public void update(Long id, @Valid EmployeeDTO employeeDTO) {
+        validateEmployeeExists(id);
+
+        Employee employee = new Employee();
+        employee.setSalary(employeeDTO.salary());
+        employee.setRole(employeeDTO.role());
+        employee.setContractDate(employeeDTO.contractDate());
+        employee.setWeeklyHours(employeeDTO.weeklyHours());
+
+        User user;
+        if (!checkUserExists(employeeDTO.user().cpf())) {
+            user = new User();
+        } else {
+            user = userRepository.findByCpf(employeeDTO.user().cpf());
+        }
+        user.setName(employeeDTO.user().name());
+        user.setCpf(employeeDTO.user().cpf());
+        user.setEmail(employeeDTO.user().email());
+        user.setPassword(employeeDTO.user().password());
+        user.setBirthDate(employeeDTO.user().birthDate());
+        user.setTwoFactor(employeeDTO.user().twoFactor());
+        user.setUsername(employeeDTO.user().username());
+        employee.setUser(user);
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        validateEmployeeExists(id);
+        employeeRepository.deleteById(id);
+    }
+
+    @Override
+    public EmployeeResponseDTO findById(Long id) {
+        validateEmployeeExists(id);
+        return EmployeeResponseDTO.valueOf(employeeRepository.findById(id));
+    }
+
+    @Override
+    public List<EmployeeResponseDTO> findAll() {
+        return employeeRepository.listAll()
+                .stream()
+                .map(EmployeeResponseDTO::valueOf)
+                .toList();
+    }
+
+    @Override
+    public List<EmployeeResponseDTO> findByName(String name) {
+        return employeeRepository.findByName(name)
+                .stream()
+                .map(EmployeeResponseDTO::valueOf)
+                .toList();
+    }
+
+    public void validateEmployeeExists(Long id) {
+        if (employeeRepository.findById(id) == null)
+            throw new ValidationException("id", "Employee não encontrado.");
+    }
+
+    public void validateEmployeeExistsByCpf(String cpf) {
+        if (checkUserExists(cpf))
+            throw new ValidationException("cpf", "Já existe um Employee com este cpf.");
+    }
+
+    public boolean checkUserExists(String cpf) {
+        return userRepository.findByCpf(cpf) != null;
+    }
+
+}

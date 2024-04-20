@@ -1,8 +1,6 @@
 package me.caua.egiftstore.dto;
 
 import me.caua.egiftstore.model.GiftCard;
-import me.caua.egiftstore.model.GiftCompany;
-import me.caua.egiftstore.model.Image;
 
 import java.util.List;
 
@@ -14,7 +12,7 @@ public record GiftCardResponseDTO(
         List<String> tags,
         List<ImageResponseDTO> images,
         Boolean visible,
-        GiftCompany company,
+        GiftCompanyResponseDTO company,
         List<GiftCodeResponseDTO> giftCodes
 ) {
     public static GiftCardResponseDTO valueOf(GiftCard giftCard) {
@@ -26,7 +24,7 @@ public record GiftCardResponseDTO(
                 giftCard.getTags(),
                 giftCard.getImages().stream().map(ImageResponseDTO::valueOf).toList(),
                 giftCard.getVisible(),
-                giftCard.getGiftCompany(),
+                GiftCompanyResponseDTO.valueOf(giftCard.getGiftCompany()),
                 giftCard.getGiftCodes().stream().map(GiftCodeResponseDTO::valueOf).toList());
     }
 }

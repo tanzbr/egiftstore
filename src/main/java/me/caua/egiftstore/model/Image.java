@@ -4,11 +4,8 @@ import jakarta.persistence.*;
 import me.caua.egiftstore.dto.ImageDTO;
 
 @Entity
-public class Image {
+public class Image extends DefaultEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column()
     private String caption;
     @Column()
@@ -31,14 +28,6 @@ public class Image {
                 imageDTO.url(),
                 imageDTO.priority()
         );
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCaption() {

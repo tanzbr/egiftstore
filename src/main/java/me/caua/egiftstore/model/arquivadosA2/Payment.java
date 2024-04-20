@@ -1,14 +1,12 @@
-package me.caua.egiftstore.model;
+package me.caua.egiftstore.model.arquivadosA2;
 
 import jakarta.persistence.*;
 import me.caua.egiftstore.enums.PaymentStatus;
+import me.caua.egiftstore.model.DefaultEntity;
 
 @Entity
-public class Payment {
+public class Payment extends DefaultEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column()
     private Double totalPrice;
     @Enumerated

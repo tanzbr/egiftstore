@@ -2,7 +2,6 @@ package me.caua.egiftstore.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
-import me.caua.egiftstore.dto.GiftCardResponseDTO;
 import me.caua.egiftstore.dto.GiftCodeDTO;
 import me.caua.egiftstore.dto.GiftCodeResponseDTO;
 
@@ -15,7 +14,7 @@ public interface GiftCodeService {
     void update(Long id, @Valid GiftCodeDTO giftCodeDTO);
     void delete(Long id);
     GiftCodeResponseDTO findById(Long id);
-    List<GiftCodeResponseDTO> findByProduto(Long id);
+    List<GiftCodeResponseDTO> findByGiftCard(Long id);
     List<GiftCodeResponseDTO> findAll();
 
 }

@@ -2,20 +2,37 @@ package me.caua.egiftstore.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
-public class GiftCompany {
+public class GiftCompany extends DefaultEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column()
     private String name;
     @Column()
     private String cnpj;
-    @ManyToOne
-    @JoinColumn(name = "giftcard_id")
-    private GiftCard giftCard;
+    @OneToOne(cascade=CascadeType.PERSIST)
+    private Image logo;
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
+
+    public Image getLogo() {
+        return logo;
+    }
+
+    public void setLogo(Image logo) {
+        this.logo = logo;
+    }
 }

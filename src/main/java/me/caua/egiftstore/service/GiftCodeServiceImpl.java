@@ -6,8 +6,6 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import me.caua.egiftstore.dto.GiftCodeDTO;
 import me.caua.egiftstore.dto.GiftCodeResponseDTO;
-import me.caua.egiftstore.enums.GiftState;
-import me.caua.egiftstore.model.GiftCard;
 import me.caua.egiftstore.model.GiftCode;
 import me.caua.egiftstore.repository.GiftCardRepository;
 import me.caua.egiftstore.repository.GiftCodeRepository;
@@ -19,7 +17,7 @@ import java.util.List;
 public class GiftCodeServiceImpl implements GiftCodeService{
 
     @Inject
-    public GiftCardRepository produtoRepository;
+    public GiftCardRepository giftCardRepository;
     @Inject
     public GiftCodeRepository giftCodeRepository;
 
@@ -27,12 +25,12 @@ public class GiftCodeServiceImpl implements GiftCodeService{
     @Transactional
     public GiftCodeResponseDTO create(@Valid GiftCodeDTO giftCodeDTO) {
         // validate if product exists
-        validateProductExists(giftCodeDTO.produtoId());
+        validateGiftCardExists(giftCodeDTO.giftcardId());
 
         GiftCode giftCode = new GiftCode();
         giftCode.setCode(giftCodeDTO.giftCode());
         giftCode.setGiftState(giftCodeDTO.giftState());
-        giftCode.setGiftCard(produtoRepository.findById(giftCodeDTO.produtoId()));
+        giftCode.setGiftCard(giftCardRepository.findById(giftCodeDTO.giftcardId()));
 
         giftCodeRepository.persist(giftCode);
 
@@ -43,29 +41,33 @@ public class GiftCodeServiceImpl implements GiftCodeService{
     @Transactional
     public void update(Long id, @Valid GiftCodeDTO giftCodeDTO) {
         // validate if product exists
-        validateProductExists(giftCodeDTO.produtoId());
+        validateGiftCardExists(giftCodeDTO.giftcardId());
+        validateGiftCodeExists(id);
 
         GiftCode giftCode = giftCodeRepository.findById(id);
 
         giftCode.setCode(giftCodeDTO.giftCode());
         giftCode.setGiftState(giftCodeDTO.giftState());
-        giftCode.setGiftCard(produtoRepository.findById(giftCodeDTO.produtoId()));
+        giftCode.setGiftCard(giftCardRepository.findById(giftCodeDTO.giftcardId()));
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
+        validateGiftCodeExists(id);
         giftCodeRepository.deleteById(id);
     }
 
     @Override
     public GiftCodeResponseDTO findById(Long id) {
+        validateGiftCodeExists(id);
         return GiftCodeResponseDTO.valueOf(giftCodeRepository.findById(id));
     }
 
     @Override
-    public List<GiftCodeResponseDTO> findByProduto(Long id) {
-        return giftCodeRepository.findByProduto(id)
+    public List<GiftCodeResponseDTO> findByGiftCard(Long id) {
+        validateGiftCardExists(id);
+        return giftCodeRepository.findByGiftCard(id)
                 .stream()
                 .map(GiftCodeResponseDTO::valueOf)
                 .toList();
@@ -79,8 +81,13 @@ public class GiftCodeServiceImpl implements GiftCodeService{
                 .toList();
     }
 
-    public void validateProductExists(Long produtoId) {
-        if (produtoRepository.findById(produtoId) == null)
-            throw new ValidationException("produtoId", "Não existe um produto com este ID.");
+    public void validateGiftCardExists(Long id) {
+        if (giftCardRepository.findById(id) == null)
+            throw new ValidationException("giftcardId", "Não existe um giftcard com este ID.");
+    }
+
+    public void validateGiftCodeExists(Long id) {
+        if (giftCodeRepository.findById(id) == null)
+            throw new ValidationException("id", "Não existe um giftcode com este ID.");
     }
 }

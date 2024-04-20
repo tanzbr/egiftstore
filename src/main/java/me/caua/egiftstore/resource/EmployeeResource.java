@@ -5,23 +5,23 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import me.caua.egiftstore.dto.GiftCardDTO;
-import me.caua.egiftstore.service.GiftCardService;
+import me.caua.egiftstore.dto.EmployeeDTO;
+import me.caua.egiftstore.service.EmployeeService;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/giftcard")
-public class GiftCardResource {
+@Path("/employee")
+public class EmployeeResource {
 
     @Inject
-    public GiftCardService giftCardService;
+    public EmployeeService employeeService;
 
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
         return Response
                 .status(Response.Status.OK)
-                .entity(giftCardService.findById(id))
+                .entity(employeeService.findById(id))
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class GiftCardResource {
     public Response findByName(@PathParam("name") String name) {
         return Response
                 .status(Response.Status.OK)
-                .entity(giftCardService.findByName(name))
+                .entity(employeeService.findByName(name))
                 .build();
     }
 
@@ -38,22 +38,22 @@ public class GiftCardResource {
     public Response findAll() {
         return Response
                 .status(Response.Status.OK)
-                .entity(giftCardService.findAll())
+                .entity(employeeService.findAll())
                 .build();
     }
 
     @POST
-    public Response create(@Valid GiftCardDTO giftCardDTO) {
+    public Response create(@Valid EmployeeDTO employeeDTO) {
         return Response
                 .status(Response.Status.CREATED)
-                .entity(giftCardService.create(giftCardDTO))
+                .entity(employeeService.create(employeeDTO))
                 .build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, @Valid GiftCardDTO giftCardDTO) {
-        giftCardService.update(id, giftCardDTO);
+    public Response update(@PathParam("id") Long id, @Valid EmployeeDTO employeeDTO) {
+        employeeService.update(id, employeeDTO);
         return Response
                 .status(Response.Status.NO_CONTENT)
                 .build();
@@ -62,7 +62,7 @@ public class GiftCardResource {
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
-        giftCardService.delete(id);
+        employeeService.delete(id);
         return Response
                 .status(Response.Status.NO_CONTENT)
                 .build();

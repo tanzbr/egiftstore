@@ -4,8 +4,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import me.caua.egiftstore.model.GiftCode;
-import me.caua.egiftstore.model.Image;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ public record GiftCardDTO(
         String description,
         @PositiveOrZero(message = "O preço não pode ser negativo.") @NotNull(message = "O preço não pode ser nulo.")
         Double price,
-        Integer companyId,
+        Long companyId,
         List<String> tags,
         List<ImageDTO> images,
         List<GiftCodeDTO> giftCodes,
@@ -38,8 +36,7 @@ public record GiftCardDTO(
         return price;
     }
 
-    @Override
-    public Integer companyId() {
+    public Long companyId() {
         return companyId;
     }
 

@@ -1,16 +1,13 @@
 package me.caua.egiftstore.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import me.caua.egiftstore.enums.GiftState;
-import me.caua.egiftstore.model.GiftCard;
 import me.caua.egiftstore.model.GiftCode;
 
 public record GiftCodeResponseDTO(
         Long id,
         String giftCode,
         GiftState giftState,
-        GiftCard giftCard
+        Long giftcardId
 ) {
 
     public static GiftCodeResponseDTO valueOf(GiftCode giftCode) {
@@ -18,7 +15,7 @@ public record GiftCodeResponseDTO(
                 giftCode.getId(),
                 giftCode.getCode(),
                 giftCode.getGiftState(),
-                giftCode.getGiftCard()
+                giftCode.getGiftCard().getId()
         );
     }
 }

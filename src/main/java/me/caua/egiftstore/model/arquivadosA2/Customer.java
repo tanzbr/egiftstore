@@ -1,16 +1,14 @@
-package me.caua.egiftstore.model;
+package me.caua.egiftstore.model.arquivadosA2;
 
 import jakarta.persistence.*;
+import me.caua.egiftstore.model.DefaultEntity;
+import me.caua.egiftstore.model.User;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-public class Customer {
+public class Customer extends DefaultEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @Column()
     private LocalDateTime registerDate;
     @Column()
