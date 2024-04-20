@@ -13,7 +13,7 @@ public class GiftCard extends DefaultEntity {
     private String description;
     @Column(nullable = false)
     private Double price;
-    @Column(length = 1000)
+    @Column
     private List<String> tags;
     @Column()
     private Boolean visible;
