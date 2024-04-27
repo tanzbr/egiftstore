@@ -5,7 +5,7 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import me.caua.egiftstore.dto.GiftCompanyDTO;
+import me.caua.egiftstore.dto.in.GiftCompanyDTO;
 import me.caua.egiftstore.service.GiftCompanyService;
 
 @Produces(MediaType.APPLICATION_JSON)

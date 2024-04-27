@@ -10,7 +10,7 @@ import java.util.List;
 public class GiftCodeRepository implements PanacheRepository<GiftCode> {
 
     public List<GiftCode> findByGiftCard(Long id) {
-        return find("from GiftCode where produto.id = ?1", id).list();
+        return find("from GiftCode where giftCard.id = ?1", id).list();
     }
     public GiftCode findByCode(String code) {
         return find("UPPER(code) = UPPER(?1)", code).firstResult();

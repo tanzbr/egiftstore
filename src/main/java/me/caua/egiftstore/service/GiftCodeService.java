@@ -2,8 +2,8 @@ package me.caua.egiftstore.service;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
-import me.caua.egiftstore.dto.GiftCodeDTO;
-import me.caua.egiftstore.dto.GiftCodeResponseDTO;
+import me.caua.egiftstore.dto.in.GiftCodeDTO;
+import me.caua.egiftstore.dto.out.GiftCodeResponseDTO;
 
 import java.util.List;
 

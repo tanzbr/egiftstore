@@ -4,8 +4,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import me.caua.egiftstore.dto.GiftCodeDTO;
-import me.caua.egiftstore.dto.GiftCodeResponseDTO;
+import me.caua.egiftstore.dto.in.GiftCodeDTO;
+import me.caua.egiftstore.dto.out.GiftCodeResponseDTO;
 import me.caua.egiftstore.model.GiftCode;
 import me.caua.egiftstore.repository.GiftCardRepository;
 import me.caua.egiftstore.repository.GiftCodeRepository;
@@ -55,8 +55,6 @@ public class GiftCodeServiceImpl implements GiftCodeService{
     @Transactional
     public void delete(Long id) {
         validateGiftCodeExists(id);
-        // to-do tratar exceção de foreign key
-
         giftCodeRepository.deleteById(id);
     }
 

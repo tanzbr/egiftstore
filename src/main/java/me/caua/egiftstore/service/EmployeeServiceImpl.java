@@ -4,14 +4,15 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import me.caua.egiftstore.dto.EmployeeDTO;
-import me.caua.egiftstore.dto.EmployeeResponseDTO;
+import me.caua.egiftstore.dto.in.EmployeeDTO;
+import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
 import me.caua.egiftstore.model.Employee;
 import me.caua.egiftstore.model.User;
 import me.caua.egiftstore.repository.EmployeeRepository;
 import me.caua.egiftstore.repository.UserRepository;
 import me.caua.egiftstore.validation.ValidationException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ApplicationScoped
@@ -33,10 +34,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setWeeklyHours(employeeDTO.weeklyHours());
 
         User user;
-        if (!checkUserExists(employeeDTO.user().cpf())) {
+        if (checkUserNotExists(employeeDTO.user().cpf())) {
             user = new User();
         } else {
             user = userRepository.findByCpf(employeeDTO.user().cpf());
+            user.setDataAlteracao(LocalDateTime.now());
         }
         user.setName(employeeDTO.user().name());
         user.setCpf(employeeDTO.user().cpf());
@@ -64,7 +66,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setWeeklyHours(employeeDTO.weeklyHours());
 
         User user;
-        if (!checkUserExists(employeeDTO.user().cpf())) {
+        if (checkUserNotExists(employeeDTO.user().cpf())) {
             user = new User();
         } else {
             user = userRepository.findByCpf(employeeDTO.user().cpf());
@@ -114,12 +116,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public void validateEmployeeExistsByCpf(String cpf) {
-        if (checkUserExists(cpf))
+        if (employeeRepository.findByCpf(cpf) != null)
             throw new ValidationException("cpf", "Já existe um Employee com este cpf.");
     }
 
-    public boolean checkUserExists(String cpf) {
-        return userRepository.findByCpf(cpf) != null;
+    public boolean checkUserNotExists(String cpf) {
+        return userRepository.findByCpf(cpf) == null;
     }
 
 }

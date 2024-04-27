@@ -4,16 +4,11 @@ import jakarta.persistence.*;
 import me.caua.egiftstore.model.DefaultEntity;
 import me.caua.egiftstore.model.User;
 
-import java.time.LocalDateTime;
-
 @Entity
 public class Customer extends DefaultEntity {
-
-    @Column()
-    private LocalDateTime registerDate;
     @Column()
     private Boolean acceptMarketing;
-    @OneToOne
+    @OneToOne(cascade= CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 }

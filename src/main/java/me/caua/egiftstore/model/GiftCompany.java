@@ -9,7 +9,7 @@ public class GiftCompany extends DefaultEntity {
     private String name;
     @Column()
     private String cnpj;
-    @OneToOne(cascade=CascadeType.PERSIST)
+    @OneToOne(cascade=CascadeType.ALL)
     private Image logo;
 
     public String getName() {
