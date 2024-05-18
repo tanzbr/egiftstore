@@ -1,6 +1,6 @@
 package me.caua.egiftstore.dto;
 
-public record AuthUsuarioDTO(
+public record AuthUserDTO(
         String email,
         String senha,
         int perfil

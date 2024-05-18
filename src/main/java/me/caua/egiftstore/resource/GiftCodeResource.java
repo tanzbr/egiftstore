@@ -1,5 +1,6 @@
 package me.caua.egiftstore.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -16,6 +17,7 @@ public class GiftCodeResource {
     @Inject
     public GiftCodeService giftCodeService;
 
+    @RolesAllowed("Funcionario")
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
@@ -25,6 +27,7 @@ public class GiftCodeResource {
                 .build();
     }
 
+    @RolesAllowed("Funcionario")
     @GET
     @Path("/search/giftcard/{id}")
     public Response findByGiftCard(@PathParam("id") Long id) {
@@ -34,6 +37,7 @@ public class GiftCodeResource {
                 .build();
     }
 
+    @RolesAllowed("Funcionario")
     @GET
     public Response findAll() {
         return Response
@@ -41,7 +45,8 @@ public class GiftCodeResource {
                 .entity(giftCodeService.findAll())
                 .build();
     }
-    
+
+    @RolesAllowed("Funcionario")
     @POST
     public Response create(@Valid GiftCodeDTO giftCodeDTO) {
         return Response
@@ -50,6 +55,7 @@ public class GiftCodeResource {
                 .build();
     }
 
+    @RolesAllowed("Funcionario")
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, @Valid GiftCodeDTO giftCodeDTO) {
@@ -59,6 +65,7 @@ public class GiftCodeResource {
                 .build();
     }
 
+    @RolesAllowed("Funcionario")
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {

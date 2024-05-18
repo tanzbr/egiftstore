@@ -12,8 +12,7 @@ public record GiftCardResponseDTO(
         List<String> tags,
         List<ImageResponseDTO> images,
         Boolean visible,
-        GiftCompanyResponseDTO company,
-        List<GiftCodeResponseDTO> giftCodes
+        GiftCompanyResponseDTO company
 ) {
     public static GiftCardResponseDTO valueOf(GiftCard giftCard) {
         return new GiftCardResponseDTO(
@@ -24,7 +23,6 @@ public record GiftCardResponseDTO(
                 giftCard.getTags(),
                 giftCard.getImages().stream().map(ImageResponseDTO::valueOf).toList(),
                 giftCard.getVisible(),
-                GiftCompanyResponseDTO.valueOf(giftCard.getGiftCompany()),
-                giftCard.getGiftCodes().stream().map(GiftCodeResponseDTO::valueOf).toList());
+                GiftCompanyResponseDTO.valueOf(giftCard.getGiftCompany()));
     }
 }

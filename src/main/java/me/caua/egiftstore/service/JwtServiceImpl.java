@@ -2,7 +2,7 @@ package me.caua.egiftstore.service;
 
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
-import me.caua.egiftstore.dto.UserResponseDTO;
+import me.caua.egiftstore.dto.out.UserResponseDTO;
 
 import java.time.Duration;
 import java.time.Instant;

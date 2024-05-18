@@ -1,5 +1,6 @@
 package me.caua.egiftstore.resource;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -42,6 +43,7 @@ public class GiftCompanyResource {
                 .build();
     }
 
+    @RolesAllowed("Funcionario")
     @POST
     public Response create(@Valid GiftCompanyDTO giftCompanyDTO) {
         return Response
@@ -50,6 +52,7 @@ public class GiftCompanyResource {
                 .build();
     }
 
+    @RolesAllowed("Funcionario")
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, @Valid GiftCompanyDTO giftCompanyDTO) {
@@ -59,6 +62,7 @@ public class GiftCompanyResource {
                 .build();
     }
 
+    @RolesAllowed("Funcionario")
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
