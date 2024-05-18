@@ -1,4 +1,4 @@
-package me.caua.egiftstore.model.arquivadosA2;
+package me.caua.egiftstore.model;
 
 import jakarta.persistence.*;
 import me.caua.egiftstore.model.DefaultEntity;
@@ -13,7 +13,7 @@ public class Customer extends DefaultEntity {
     private LocalDateTime registerDate;
     @Column()
     private Boolean acceptMarketing;
-    @OneToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne(cascade=CascadeType.PERSIST)
+    @JoinColumn(name = "user_id", unique = true)
     private User user;
 }

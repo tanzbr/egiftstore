@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
 import me.caua.egiftstore.dto.EmployeeDTO;
 import me.caua.egiftstore.dto.EmployeeResponseDTO;
+import me.caua.egiftstore.dto.UserResponseDTO;
 
 import java.util.List;
 
@@ -16,5 +17,6 @@ public interface EmployeeService {
     EmployeeResponseDTO findById(Long id);
     List<EmployeeResponseDTO> findByName(String name);
     List<EmployeeResponseDTO> findAll();
+    UserResponseDTO login(String email, String password);
 
 }

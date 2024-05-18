@@ -1,6 +1,7 @@
 package me.caua.egiftstore.model.arquivadosA2;
 
 import jakarta.persistence.*;
+import me.caua.egiftstore.model.Customer;
 import me.caua.egiftstore.model.DefaultEntity;
 
 import java.time.LocalDateTime;

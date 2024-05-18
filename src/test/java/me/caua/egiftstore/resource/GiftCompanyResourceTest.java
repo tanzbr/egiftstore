@@ -93,4 +93,5 @@ class GiftCompanyResourceTest {
                 .then()
                 .statusCode(204);
     }
+
 }

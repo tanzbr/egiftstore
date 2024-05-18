@@ -15,7 +15,7 @@ public class Employee extends DefaultEntity {
     @Column()
     private LocalDate contractDate;
     @OneToOne(cascade=CascadeType.PERSIST)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", unique = true)
     private User user;
     @Enumerated
     private Role role;

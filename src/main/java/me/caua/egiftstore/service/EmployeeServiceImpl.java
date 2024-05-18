@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import me.caua.egiftstore.dto.EmployeeDTO;
 import me.caua.egiftstore.dto.EmployeeResponseDTO;
+import me.caua.egiftstore.dto.UserResponseDTO;
 import me.caua.egiftstore.model.Employee;
 import me.caua.egiftstore.model.User;
 import me.caua.egiftstore.repository.EmployeeRepository;
@@ -21,6 +22,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeRepository employeeRepository;
     @Inject
     public UserRepository userRepository;
+    @Inject
+    public HashService hashService;
     @Override
     @Transactional
     public EmployeeResponseDTO create(@Valid EmployeeDTO employeeDTO) {
@@ -41,7 +44,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         user.setName(employeeDTO.user().name());
         user.setCpf(employeeDTO.user().cpf());
         user.setEmail(employeeDTO.user().email());
-        user.setPassword(employeeDTO.user().password());
+        user.setPassword(hashService.getHashSenha(employeeDTO.user().password()));
         user.setBirthDate(employeeDTO.user().birthDate());
         user.setTwoFactor(employeeDTO.user().twoFactor());
         user.setUsername(employeeDTO.user().username());
@@ -106,6 +109,10 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .stream()
                 .map(EmployeeResponseDTO::valueOf)
                 .toList();
+    }
+
+    public UserResponseDTO login(String email, String password) {
+        return UserResponseDTO.valueOf(employeeRepository.findByEmailAndPass(email, password).getUser());
     }
 
     public void validateEmployeeExists(Long id) {
