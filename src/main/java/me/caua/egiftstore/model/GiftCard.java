@@ -17,7 +17,7 @@ public class GiftCard extends DefaultEntity {
     private List<String> tags;
     @Column()
     private Boolean visible;
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(mappedBy = "giftCard", cascade=CascadeType.ALL)
     private List<GiftCode> giftCodes;
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "giftcompany_id")
@@ -70,6 +70,7 @@ public class GiftCard extends DefaultEntity {
     }
 
     public void setGiftCodes(List<GiftCode> giftCodes) {
+        if (this.giftCodes != null) this.giftCodes.clear();
         this.giftCodes = giftCodes;
     }
 
@@ -86,6 +87,7 @@ public class GiftCard extends DefaultEntity {
     }
 
     public void setImages(List<Image> images) {
+        if (this.images != null) this.images.clear();
         this.images = images;
     }
 }

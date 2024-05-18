@@ -1,7 +1,7 @@
 package me.caua.egiftstore.model;
 
 import jakarta.persistence.*;
-import me.caua.egiftstore.dto.ImageDTO;
+import me.caua.egiftstore.dto.in.ImageDTO;
 
 @Entity
 public class Image extends DefaultEntity {

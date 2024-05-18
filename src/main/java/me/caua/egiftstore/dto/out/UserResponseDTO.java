@@ -1,4 +1,4 @@
-package me.caua.egiftstore.dto;
+package me.caua.egiftstore.dto.out;
 
 import me.caua.egiftstore.model.User;
 

@@ -14,7 +14,7 @@ public class Employee extends DefaultEntity {
     private Double salary;
     @Column()
     private LocalDate contractDate;
-    @OneToOne(cascade=CascadeType.PERSIST)
+    @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "user_id", unique = true)
     private User user;
     @Enumerated
