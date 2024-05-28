@@ -24,6 +24,15 @@ public class GiftCard extends DefaultEntity {
     private GiftCompany giftCompany;
     @OneToMany(cascade=CascadeType.ALL)
     private List<Image> images;
+    private String imageName;
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
 
     public String getName() {
         return name;

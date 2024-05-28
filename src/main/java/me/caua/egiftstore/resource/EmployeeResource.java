@@ -43,7 +43,6 @@ public class EmployeeResource {
                 .build();
     }
 
-    @RolesAllowed("Funcionario")
     @POST
     public Response create(@Valid EmployeeDTO employeeDTO) {
         return Response

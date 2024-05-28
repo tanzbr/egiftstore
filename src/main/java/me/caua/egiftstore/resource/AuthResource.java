@@ -4,7 +4,7 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import me.caua.egiftstore.dto.AuthUserDTO;
+import me.caua.egiftstore.dto.in.AuthUserDTO;
 import me.caua.egiftstore.dto.out.UserResponseDTO;
 import me.caua.egiftstore.service.EmployeeService;
 import me.caua.egiftstore.service.HashService;
@@ -29,10 +29,10 @@ public class AuthResource {
         UserResponseDTO user = null;
 
         // 1 = employee
-        if (authUserDTO.perfil() == 1) {
-            user = employeeService.login(authUserDTO.email(), authUserDTO.senha());
+        if (authUserDTO.perfil() == 0) {
+            user = employeeService.login(authUserDTO.email(), hash);
             // 2 = customer
-        } else if (authUserDTO.perfil() == 2) {
+        } else if (authUserDTO.perfil() == 1) {
             // to-do
             return Response.status(Response.Status.NOT_FOUND).build();
         } else {

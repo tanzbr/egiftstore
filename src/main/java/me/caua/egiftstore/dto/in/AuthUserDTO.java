@@ -1,4 +1,4 @@
-package me.caua.egiftstore.dto;
+package me.caua.egiftstore.dto.in;
 
 public record AuthUserDTO(
         String email,

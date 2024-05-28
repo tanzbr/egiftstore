@@ -1,4 +1,4 @@
-package me.caua.egiftstore.model.arquivadosA2;
+package me.caua.egiftstore.model;
 
 import jakarta.persistence.*;
 import me.caua.egiftstore.enums.PaymentStatus;

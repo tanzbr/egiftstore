@@ -7,7 +7,11 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.caua.egiftstore.dto.in.GiftCardDTO;
+import me.caua.egiftstore.form.ImageForm;
+import me.caua.egiftstore.service.FileService;
+import me.caua.egiftstore.service.GiftCardFileServiceImpl;
 import me.caua.egiftstore.service.GiftCardService;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -16,6 +20,8 @@ public class GiftCardResource {
 
     @Inject
     public GiftCardService giftCardService;
+    @Inject
+    public GiftCardFileServiceImpl fileService;
 
     @GET
     @Path("/{id}")
@@ -70,6 +76,22 @@ public class GiftCardResource {
         return Response
                 .status(Response.Status.NO_CONTENT)
                 .build();
+    }
+
+    @PATCH
+    @Path("/{id}/image/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response saveImage(@PathParam("id") Long id, @MultipartForm ImageForm form) {
+        fileService.save(id, form.getImageName(), form.getImage());
+        return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/image/download/{imageName}")
+    public Response download(@PathParam("imageName") String imageName) {
+        Response.ResponseBuilder responseBuilder = Response.ok(fileService.download(imageName));
+        responseBuilder.header("Content-Disposition", "attachment;filename="+imageName);
+        return responseBuilder.build();
     }
 
 }

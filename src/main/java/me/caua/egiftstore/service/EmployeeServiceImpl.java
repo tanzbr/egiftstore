@@ -62,7 +62,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void update(Long id, @Valid EmployeeDTO employeeDTO) {
         validateEmployeeExists(id);
 
-        Employee employee = new Employee();
+        Employee employee = employeeRepository.findById(id);
         employee.setSalary(employeeDTO.salary());
         employee.setRole(employeeDTO.role());
         employee.setContractDate(employeeDTO.contractDate());

@@ -1,8 +1,6 @@
-package me.caua.egiftstore.model.arquivadosA2;
+package me.caua.egiftstore.model;
 
 import jakarta.persistence.*;
-import me.caua.egiftstore.model.Customer;
-import me.caua.egiftstore.model.DefaultEntity;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,6 +16,7 @@ public class Order extends DefaultEntity {
     @JoinColumn(name = "customer_id")
     private Customer customer;
     @OneToMany
+    @JoinColumn(name = "id_pedido")
     private List<OrderItem> orderItems;
     @OneToOne
     @JoinColumn(name = "payment_id")
