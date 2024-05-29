@@ -7,7 +7,12 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.caua.egiftstore.dto.in.GiftCompanyDTO;
+import me.caua.egiftstore.form.ImageForm;
+import me.caua.egiftstore.model.GiftCompany;
+import me.caua.egiftstore.service.GiftCardFileServiceImpl;
+import me.caua.egiftstore.service.GiftCompanyFileServiceImpl;
 import me.caua.egiftstore.service.GiftCompanyService;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -16,6 +21,8 @@ public class GiftCompanyResource {
 
     @Inject
     public GiftCompanyService giftCompanyService;
+    @Inject
+    public GiftCompanyFileServiceImpl fileService;
 
     @GET
     @Path("/{id}")
@@ -43,7 +50,7 @@ public class GiftCompanyResource {
                 .build();
     }
 
-    @RolesAllowed("Funcionario")
+    @RolesAllowed({"SALES", "MANAGER", "CEO"})
     @POST
     public Response create(@Valid GiftCompanyDTO giftCompanyDTO) {
         return Response
@@ -52,7 +59,7 @@ public class GiftCompanyResource {
                 .build();
     }
 
-    @RolesAllowed("Funcionario")
+    @RolesAllowed({"SALES", "MANAGER", "CEO"})
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, @Valid GiftCompanyDTO giftCompanyDTO) {
@@ -62,7 +69,7 @@ public class GiftCompanyResource {
                 .build();
     }
 
-    @RolesAllowed("Funcionario")
+    @RolesAllowed({"SALES", "MANAGER", "CEO"})
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
@@ -70,6 +77,23 @@ public class GiftCompanyResource {
         return Response
                 .status(Response.Status.NO_CONTENT)
                 .build();
+    }
+
+    @RolesAllowed({"SALES", "MANAGER", "CEO"})
+    @PATCH
+    @Path("/{id}/image/upload")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response saveImage(@PathParam("id") Long id, @MultipartForm ImageForm form) {
+        fileService.save(id, form.getImageName(), form.getImage());
+        return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/image/download/{imageName}")
+    public Response download(@PathParam("imageName") String imageName) {
+        Response.ResponseBuilder responseBuilder = Response.ok(fileService.download(imageName));
+        responseBuilder.header("Content-Disposition", "attachment;filename="+imageName);
+        return responseBuilder.build();
     }
 
 }

@@ -4,7 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import me.caua.egiftstore.model.GiftCard;
+import me.caua.egiftstore.model.GiftCompany;
 import me.caua.egiftstore.repository.GiftCardRepository;
+import me.caua.egiftstore.repository.GiftCompanyRepository;
 import me.caua.egiftstore.validation.ValidationException;
 
 import java.io.File;
@@ -16,10 +18,10 @@ import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
-public class GiftCardFileServiceImpl implements FileService {
+public class GiftCompanyFileServiceImpl implements FileService {
 
     @Inject
-    public GiftCardRepository giftCardRepository;
+    public GiftCompanyRepository giftCompanyRepository;
 
     private final String PATH_USER = System.getProperty("user.home")
             + File.separator + "quarkus"
@@ -29,10 +31,10 @@ public class GiftCardFileServiceImpl implements FileService {
     @Transactional
     @Override
     public void save(Long id, String imageName, byte[] image) {
-        GiftCard giftCard = giftCardRepository.findById(id);
+        GiftCompany giftCompany = giftCompanyRepository.findById(id);
 
         try {
-            giftCard.setImageName(saveImage(imageName, image));
+            giftCompany.setImageName(saveImage(imageName, image));
         } catch (IOException e) {
             throw new ValidationException("null", e.getMessage());
         }

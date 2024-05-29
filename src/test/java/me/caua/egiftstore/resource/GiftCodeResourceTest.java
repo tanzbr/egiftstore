@@ -6,7 +6,6 @@ import jakarta.ws.rs.core.MediaType;
 import me.caua.egiftstore.dto.in.GiftCardDTO;
 import me.caua.egiftstore.dto.in.GiftCodeDTO;
 import me.caua.egiftstore.dto.in.GiftCompanyDTO;
-import me.caua.egiftstore.dto.in.ImageDTO;
 import me.caua.egiftstore.dto.out.GiftCardResponseDTO;
 import me.caua.egiftstore.dto.out.GiftCodeResponseDTO;
 import me.caua.egiftstore.dto.out.GiftCompanyResponseDTO;
@@ -14,6 +13,7 @@ import me.caua.egiftstore.enums.GiftState;
 import me.caua.egiftstore.service.GiftCardService;
 import me.caua.egiftstore.service.GiftCodeService;
 import me.caua.egiftstore.service.GiftCompanyService;
+import me.caua.egiftstore.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -31,6 +31,8 @@ class GiftCodeResourceTest {
     GiftCardService giftCardService;
     @Inject
     GiftCompanyService giftCompanyService;
+    @Inject
+    TestUtils testUtils;
     @Test
     public void createTest() {
         GiftCardResponseDTO response = createFakeGiftCard("create");
@@ -39,6 +41,7 @@ class GiftCodeResourceTest {
                 new GiftCodeDTO("codigo teste create", GiftState.AVAILABLE, response.id());
 
         given()
+                .header("Authorization", "Bearer " + testUtils.getAuth())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(giftCodeDTO)
                 .when()
@@ -56,6 +59,7 @@ class GiftCodeResourceTest {
                 new GiftCodeDTO("codigo teste update", GiftState.CLAIMED, response.giftcardId());
 
         given()
+                .header("Authorization", "Bearer " + testUtils.getAuth())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(giftCodeDTO2)
                 .when()
@@ -70,10 +74,11 @@ class GiftCodeResourceTest {
     @Test
     public void findAllTest() {
         given()
-            .when()
-            .get("/giftcode")
-            .then()
-            .statusCode(200);
+                .header("Authorization", "Bearer " + testUtils.getAuth())
+                .when()
+                .get("/giftcode")
+                .then()
+                .statusCode(200);
     }
 
     @Test
@@ -81,6 +86,7 @@ class GiftCodeResourceTest {
         GiftCodeResponseDTO response = createFakeGiftCode("testeFindId");
 
         given()
+                .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
                 .pathParam("id", response.id())
                 .get("/giftcode/{id}")
@@ -96,6 +102,7 @@ class GiftCodeResourceTest {
         GiftCodeResponseDTO response = createFakeGiftCode("testeFindByGift");
 
         given()
+                .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
                 .pathParam("id", response.giftcardId())
                 .get("/giftcode/search/giftcard/{id}")
@@ -111,6 +118,7 @@ class GiftCodeResourceTest {
         GiftCodeResponseDTO response = createFakeGiftCode("testeDelete");
 
         given()
+                .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
                 .pathParam("id", response.id())
                 .delete("/giftcode/{id}")
@@ -128,12 +136,8 @@ class GiftCodeResourceTest {
     }
 
     public GiftCardResponseDTO createFakeGiftCard(String uniqueId) {
-        GiftCompanyResponseDTO giftCompanyResponseDTO = createFakeCompany();
+        GiftCompanyResponseDTO giftCompanyResponseDTO = testUtils.createFakeCompany();
 
-        ImageDTO imageDTO =
-                new ImageDTO("Imagem teste 5", "https://url teste", 1);
-        ImageDTO imageDTO2 =
-                new ImageDTO("Imagem teste 4", "https://url teste", 2);
         GiftCodeDTO giftCodeDTO =
                 new GiftCodeDTO("codigoteste " + uniqueId, GiftState.AVAILABLE, null);
         GiftCodeDTO giftCodeDTO2 =
@@ -147,21 +151,10 @@ class GiftCodeResourceTest {
                         40.0,
                         giftCompanyResponseDTO.id(),
                         List.of("tag1", "tag2"),
-                        List.of(imageDTO, imageDTO2),
                         List.of(giftCodeDTO, giftCodeDTO2),
                         true
                 );
 
         return giftCardService.create(giftCardDTO);
-    }
-
-    public GiftCompanyResponseDTO createFakeCompany() {
-        ImageDTO imageDTO =
-                new ImageDTO("Imagem teste", "https://url teste", 1);
-
-        GiftCompanyDTO giftCompanyDTO
-                = new GiftCompanyDTO("Teste", "111.111.111", imageDTO);
-
-        return giftCompanyService.create(giftCompanyDTO);
     }
 }

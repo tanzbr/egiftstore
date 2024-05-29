@@ -1,6 +1,7 @@
 package me.caua.egiftstore.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 
 @Entity
 public class GiftCompany extends DefaultEntity {
@@ -9,8 +10,7 @@ public class GiftCompany extends DefaultEntity {
     private String name;
     @Column()
     private String cnpj;
-    @OneToOne(cascade=CascadeType.ALL)
-    private Image logo;
+    private String imageName;
 
     public String getName() {
         return name;
@@ -28,11 +28,11 @@ public class GiftCompany extends DefaultEntity {
         this.cnpj = cnpj;
     }
 
-    public Image getLogo() {
-        return logo;
+    public String getImageName() {
+        return imageName;
     }
 
-    public void setLogo(Image logo) {
-        this.logo = logo;
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 }

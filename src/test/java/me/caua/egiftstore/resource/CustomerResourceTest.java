@@ -3,10 +3,13 @@ package me.caua.egiftstore.resource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
+import me.caua.egiftstore.dto.in.CustomerDTO;
 import me.caua.egiftstore.dto.in.EmployeeDTO;
 import me.caua.egiftstore.dto.in.UserDTO;
+import me.caua.egiftstore.dto.out.CustomerResponseDTO;
 import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
 import me.caua.egiftstore.enums.Role;
+import me.caua.egiftstore.service.CustomerService;
 import me.caua.egiftstore.service.EmployeeService;
 import me.caua.egiftstore.utils.TestUtils;
 import org.junit.jupiter.api.Test;
@@ -18,10 +21,10 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-class EmployeeResourceTest {
+class CustomerResourceTest {
 
     @Inject
-    EmployeeService employeeService;
+    CustomerService customerService;
     @Inject
     TestUtils testUtils;
 
@@ -29,38 +32,35 @@ class EmployeeResourceTest {
     public void createTest() {
         UserDTO userDTO =
                 new UserDTO(
-                        "Usuário Teste",
+                        "Cliente Teste",
                         "111.111",
-                        "teste@teste.com",
-                        "userteste",
-                        "senhateste",
+                        "cliente@teste.com",
+                        "clienteteste",
+                        "clienteteste",
                         true,
                         LocalDate.now()
                 );
 
-        EmployeeDTO employeeDTO =
-                new EmployeeDTO(
-                        40.0,
-                        1230.0,
-                        LocalDate.now(),
-                        userDTO,
-                        Role.SALES
+        CustomerDTO customerDTO =
+                new CustomerDTO(
+                        true,
+                        userDTO
                 );
 
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(employeeDTO)
+                .body(customerDTO)
                 .when()
-                .post("/employee")
+                .post("/customer")
                 .then()
                 .statusCode(201)
-                .body("user.cpf", is(employeeDTO.user().cpf()));
+                .body("user.cpf", is(customerDTO.userDTO().cpf()));
     }
 
     @Test
     public void updateTest() {
-        EmployeeResponseDTO response = createFakeEmployee("111.111");
+        CustomerResponseDTO response = createFakeCustomer("111.111");
 
         UserDTO userDTO =
                 new UserDTO(
@@ -73,26 +73,23 @@ class EmployeeResourceTest {
                         LocalDate.now()
                 );
 
-        EmployeeDTO employeeDTO =
-                new EmployeeDTO(
-                        44.0,
-                        1530.0,
-                        LocalDate.now(),
-                        userDTO,
-                        Role.MANAGER
+        CustomerDTO customerDTO =
+                new CustomerDTO(
+                        false,
+                        userDTO
                 );
 
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(employeeDTO)
+                .body(customerDTO)
                 .when()
                 .pathParam("id", response.id())
-                .put("/employee/{id}")
+                .put("/customer/{id}")
                 .then()
                 .statusCode(204);
 
-        employeeService.delete(response.id());
+        customerService.delete(response.id());
     }
 
     @Test
@@ -100,93 +97,73 @@ class EmployeeResourceTest {
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
-                .get("/employee")
+                .get("/customer")
                 .then()
                 .statusCode(200);
     }
 
     @Test
     public void findByIdTest() {
-        EmployeeResponseDTO response = createFakeEmployee("333.333");
+        CustomerResponseDTO response = createFakeCustomer("333.333");
 
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
                 .pathParam("id", response.id())
-                .get("/employee/{id}")
+                .get("/customer/{id}")
                 .then()
                 .statusCode(200)
                 .body("id", is(response.id().intValue()));
 
-        employeeService.delete(response.id());
-    }
-
-    @Test
-    public void findByCpfTest() {
-        EmployeeResponseDTO response = createFakeEmployee("333.334");
-
-        given()
-                .header("Authorization", "Bearer " + testUtils.getAuth())
-                .when()
-                .pathParam("cpf", response.user().cpf())
-                .get("/employee/search/cpf/{cpf}")
-                .then()
-                .statusCode(200)
-                .body("id", is(response.id().intValue()));
-
-        employeeService.delete(response.id());
+        customerService.delete(response.id());
     }
 
     @Test
     public void findByNameTest() {
-        EmployeeResponseDTO response = createFakeEmployee("444.444");
+        CustomerResponseDTO response = createFakeCustomer("444.444");
 
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
                 .pathParam("name", response.user().name())
-                .get("/employee/search/name/{name}")
+                .get("/customer/search/name/{name}")
                 .then()
                 .statusCode(200)
                 .body("user.name", hasItem(response.user().name()));
 
-        employeeService.delete(response.id());
+        customerService.delete(response.id());
     }
 
     @Test
     public void deleteTest() {
-        EmployeeResponseDTO response = createFakeEmployee("555.555");
+        CustomerResponseDTO response = createFakeCustomer("555.555");
 
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
                 .pathParam("id", response.id())
-                .delete("/employee/{id}")
+                .delete("/customer/{id}")
                 .then()
                 .statusCode(204);
     }
 
-    public EmployeeResponseDTO createFakeEmployee(String cpf) {
+    public CustomerResponseDTO createFakeCustomer(String cpf) {
         UserDTO userDTO =
                 new UserDTO(
-                        "Usuário Teste",
+                        "Cliente2 Teste",
                         cpf,
-                        "teste@teste.com",
-                        "userteste",
-                        "senhateste",
+                        "cliente2@teste.com",
+                        "cliente2teste",
+                        "senhateste2",
                         true,
                         LocalDate.now()
                 );
 
-        EmployeeDTO employeeDTO =
-                new EmployeeDTO(
-                        40.0,
-                        1230.0,
-                        LocalDate.now(),
-                        userDTO,
-                        Role.SALES
-                );
+        CustomerDTO customerDTO = new CustomerDTO(
+                true,
+                userDTO
+        );
 
-        return employeeService.create(employeeDTO);
+        return customerService.create(customerDTO);
     }
 }

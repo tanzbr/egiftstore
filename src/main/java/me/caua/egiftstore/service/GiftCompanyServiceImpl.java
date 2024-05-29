@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import me.caua.egiftstore.dto.in.GiftCompanyDTO;
 import me.caua.egiftstore.dto.out.GiftCompanyResponseDTO;
 import me.caua.egiftstore.model.GiftCompany;
-import me.caua.egiftstore.model.Image;
 import me.caua.egiftstore.repository.GiftCompanyRepository;
 import me.caua.egiftstore.validation.ValidationException;
 
@@ -26,7 +25,6 @@ public class GiftCompanyServiceImpl implements GiftCompanyService {
 
         giftCompany.setName(giftCompanyDTO.name());
         giftCompany.setCnpj(giftCompanyDTO.cnpj());
-        giftCompany.setLogo(new Image(giftCompanyDTO.logo().caption(), giftCompanyDTO.logo().url(), giftCompanyDTO.logo().priority()));
 
         giftCompanyRepository.persist(giftCompany);
 
@@ -41,7 +39,6 @@ public class GiftCompanyServiceImpl implements GiftCompanyService {
 
         giftCompany.setName(giftCompanyDTO.name());
         giftCompany.setCnpj(giftCompanyDTO.cnpj());
-        giftCompany.setLogo(new Image(giftCompanyDTO.logo().caption(), giftCompanyDTO.logo().url(), giftCompanyDTO.logo().priority()));
     }
 
     @Override
@@ -75,7 +72,7 @@ public class GiftCompanyServiceImpl implements GiftCompanyService {
 
     public void validateCompanyExists(Long id) {
         if (giftCompanyRepository.findById(id) == null)
-            throw new ValidationException("id", "GiftCompany não encontrado.");
+            throw new ValidationException("id", "GiftCompany not found.");
     }
 
 }

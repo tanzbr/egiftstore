@@ -15,6 +15,7 @@ public interface EmployeeService {
     void update(Long id, @Valid EmployeeDTO employeeDTO);
     void delete(Long id);
     EmployeeResponseDTO findById(Long id);
+    EmployeeResponseDTO findByCpf(String cpf);
     List<EmployeeResponseDTO> findByName(String name);
     List<EmployeeResponseDTO> findAll();
     UserResponseDTO login(String email, String password);

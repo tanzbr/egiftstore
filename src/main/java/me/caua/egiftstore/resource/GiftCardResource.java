@@ -8,7 +8,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import me.caua.egiftstore.dto.in.GiftCardDTO;
 import me.caua.egiftstore.form.ImageForm;
-import me.caua.egiftstore.service.FileService;
 import me.caua.egiftstore.service.GiftCardFileServiceImpl;
 import me.caua.egiftstore.service.GiftCardService;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
@@ -49,7 +48,7 @@ public class GiftCardResource {
                 .build();
     }
 
-    @RolesAllowed("Funcionario")
+    @RolesAllowed({"SALES", "MANAGER", "CEO"})
     @POST
     public Response create(@Valid GiftCardDTO giftCardDTO) {
         return Response
@@ -58,7 +57,7 @@ public class GiftCardResource {
                 .build();
     }
 
-    @RolesAllowed("Funcionario")
+    @RolesAllowed({"SALES", "MANAGER", "CEO"})
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, @Valid GiftCardDTO giftCardDTO) {
@@ -68,7 +67,7 @@ public class GiftCardResource {
                 .build();
     }
 
-    @RolesAllowed("Funcionario")
+    @RolesAllowed({"MANAGER", "CEO"})
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
@@ -78,6 +77,7 @@ public class GiftCardResource {
                 .build();
     }
 
+    @RolesAllowed({"SALES", "MANAGER", "CEO"})
     @PATCH
     @Path("/{id}/image/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)

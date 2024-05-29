@@ -3,9 +3,7 @@ package me.caua.egiftstore.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.Valid;
 import me.caua.egiftstore.dto.in.CustomerDTO;
-import me.caua.egiftstore.dto.in.EmployeeDTO;
 import me.caua.egiftstore.dto.out.CustomerResponseDTO;
-import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
 import me.caua.egiftstore.dto.out.UserResponseDTO;
 
 import java.util.List;

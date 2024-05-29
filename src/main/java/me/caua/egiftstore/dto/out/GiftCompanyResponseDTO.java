@@ -6,14 +6,14 @@ public record GiftCompanyResponseDTO(
         Long id,
         String name,
         String cnpj,
-        ImageResponseDTO logo
+        String logo
 ) {
     public static GiftCompanyResponseDTO valueOf(GiftCompany giftCompany) {
         return new GiftCompanyResponseDTO(
                 giftCompany.getId(),
                 giftCompany.getName(),
                 giftCompany.getCnpj(),
-                ImageResponseDTO.valueOf(giftCompany.getLogo())
+                giftCompany.getImageName()
         );
     }
 }

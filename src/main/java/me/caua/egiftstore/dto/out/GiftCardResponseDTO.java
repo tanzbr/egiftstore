@@ -10,7 +10,7 @@ public record GiftCardResponseDTO(
         String description,
         Double price,
         List<String> tags,
-        List<ImageResponseDTO> images,
+        String imageName,
         Boolean visible,
         GiftCompanyResponseDTO company
 ) {
@@ -21,7 +21,7 @@ public record GiftCardResponseDTO(
                 giftCard.getDescription(),
                 giftCard.getPrice(),
                 giftCard.getTags(),
-                giftCard.getImages().stream().map(ImageResponseDTO::valueOf).toList(),
+                giftCard.getImageName(),
                 giftCard.getVisible(),
                 GiftCompanyResponseDTO.valueOf(giftCard.getGiftCompany()));
     }

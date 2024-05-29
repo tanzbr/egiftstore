@@ -5,15 +5,11 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import me.caua.egiftstore.dto.in.CustomerDTO;
-import me.caua.egiftstore.dto.in.EmployeeDTO;
 import me.caua.egiftstore.dto.out.CustomerResponseDTO;
-import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
 import me.caua.egiftstore.dto.out.UserResponseDTO;
 import me.caua.egiftstore.model.Customer;
-import me.caua.egiftstore.model.Employee;
 import me.caua.egiftstore.model.User;
 import me.caua.egiftstore.repository.CustomerRepository;
-import me.caua.egiftstore.repository.EmployeeRepository;
 import me.caua.egiftstore.repository.UserRepository;
 import me.caua.egiftstore.validation.ValidationException;
 
@@ -113,17 +109,19 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public UserResponseDTO login(String email, String password) {
+        if (customerRepository.findByEmailAndPass(email, password) == null)
+            throw new ValidationException("email and password", "customer not found");
         return UserResponseDTO.valueOf(customerRepository.findByEmailAndPass(email, password).getUser());
     }
 
     public void validateCustomerExists(Long id) {
         if (customerRepository.findById(id) == null)
-            throw new ValidationException("id", "Employee não encontrado.");
+            throw new ValidationException("id", "customer not found");
     }
 
     public void validateCustomerExistsByCpf(String cpf) {
         if (customerRepository.findByCpf(cpf) != null)
-            throw new ValidationException("cpf", "Já existe um Customer com este cpf.");
+            throw new ValidationException("cpf", "a Customer with this cpf already exists.");
     }
 
     public boolean checkUserNotExists(String cpf) {

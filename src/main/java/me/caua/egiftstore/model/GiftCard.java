@@ -22,8 +22,6 @@ public class GiftCard extends DefaultEntity {
     @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "giftcompany_id")
     private GiftCompany giftCompany;
-    @OneToMany(cascade=CascadeType.ALL)
-    private List<Image> images;
     private String imageName;
 
     public String getImageName() {
@@ -89,14 +87,5 @@ public class GiftCard extends DefaultEntity {
 
     public void setGiftCompany(GiftCompany giftCompany) {
         this.giftCompany = giftCompany;
-    }
-
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        if (this.images != null) this.images.clear();
-        this.images = images;
     }
 }

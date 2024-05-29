@@ -1,35 +1,50 @@
 package me.caua.egiftstore.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.http.Header;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
+import me.caua.egiftstore.dto.in.EmployeeDTO;
 import me.caua.egiftstore.dto.in.GiftCompanyDTO;
-import me.caua.egiftstore.dto.in.ImageDTO;
+import me.caua.egiftstore.dto.in.UserDTO;
+import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
 import me.caua.egiftstore.dto.out.GiftCompanyResponseDTO;
+import me.caua.egiftstore.dto.out.UserResponseDTO;
+import me.caua.egiftstore.enums.Role;
+import me.caua.egiftstore.repository.EmployeeRepository;
+import me.caua.egiftstore.repository.UserRepository;
+import me.caua.egiftstore.service.EmployeeService;
 import me.caua.egiftstore.service.GiftCompanyService;
+import me.caua.egiftstore.service.HashService;
+import me.caua.egiftstore.service.JwtService;
+import me.caua.egiftstore.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 class GiftCompanyResourceTest {
 
     @Inject
     GiftCompanyService giftCompanyService;
+    @Inject
+    TestUtils testUtils;
 
     @Test
     public void createTest() {
-        ImageDTO imageDTO =
-                new ImageDTO("logo do google", "https://url.com", 1);
 
         GiftCompanyDTO giftCompanyDTO =
                 new GiftCompanyDTO(
                         "Google",
-                        "11.111.111-0001/10",
-                        imageDTO);
+                        "11.111.111-0001/10"
+                        );
 
         given()
+                .header("Authorization", "Bearer " + testUtils.getAuth())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(giftCompanyDTO)
                 .when()
@@ -41,18 +56,15 @@ class GiftCompanyResourceTest {
 
     @Test
     public void updateTest() {
-        GiftCompanyResponseDTO response = createFakeCompany();
-
-        ImageDTO imageDTO =
-                new ImageDTO("logo do google update 2", "https://url.com", 2);
-
+        GiftCompanyResponseDTO response = testUtils.createFakeCompany();
         GiftCompanyDTO giftCompanyDTO =
                 new GiftCompanyDTO(
                         "Google Update",
-                        "22.111.111-0001/10",
-                        imageDTO);
+                        "22.111.111-0001/10"
+                        );
 
         given()
+                .header("Authorization", "Bearer " + testUtils.getAuth())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(giftCompanyDTO)
                 .when()
@@ -75,7 +87,7 @@ class GiftCompanyResourceTest {
 
     @Test
     public void findByIdTest() {
-        GiftCompanyResponseDTO response = createFakeCompany();
+        GiftCompanyResponseDTO response = testUtils.createFakeCompany();
 
         given()
                 .when()
@@ -90,7 +102,7 @@ class GiftCompanyResourceTest {
 
     @Test
     public void findByNameTest() {
-        GiftCompanyResponseDTO response = createFakeCompany();
+        GiftCompanyResponseDTO response = testUtils.createFakeCompany();
 
         given()
                 .when()
@@ -105,23 +117,14 @@ class GiftCompanyResourceTest {
 
     @Test
     public void deleteTest() {
-        GiftCompanyResponseDTO response = createFakeCompany();
+        GiftCompanyResponseDTO response = testUtils.createFakeCompany();
 
         given()
+                .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
                 .pathParam("id", response.id())
                 .delete("/giftcompany/{id}")
                 .then()
                 .statusCode(204);
-    }
-
-    public GiftCompanyResponseDTO createFakeCompany() {
-        ImageDTO imageDTO =
-                new ImageDTO("Imagem teste", "https://url teste", 1);
-
-        GiftCompanyDTO giftCompanyDTO
-                = new GiftCompanyDTO("Teste", "111.111.111", imageDTO);
-
-        return giftCompanyService.create(giftCompanyDTO);
     }
 }

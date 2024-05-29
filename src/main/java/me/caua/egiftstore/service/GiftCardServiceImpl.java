@@ -8,7 +8,6 @@ import me.caua.egiftstore.dto.in.GiftCardDTO;
 import me.caua.egiftstore.dto.out.GiftCardResponseDTO;
 import me.caua.egiftstore.model.GiftCard;
 import me.caua.egiftstore.model.GiftCode;
-import me.caua.egiftstore.model.Image;
 import me.caua.egiftstore.repository.GiftCardRepository;
 import me.caua.egiftstore.repository.GiftCodeRepository;
 import me.caua.egiftstore.repository.GiftCompanyRepository;
@@ -37,7 +36,6 @@ public class GiftCardServiceImpl implements GiftCardService {
         giftCard.setPrice(giftCardDTO.price());
         giftCard.setTags(giftCardDTO.tags());
         giftCard.setVisible(giftCardDTO.visible());
-        giftCard.setImages(giftCardDTO.images().stream().map(Image::valueOf).toList());
         giftCard.setGiftCodes(giftCardDTO.giftCodes().stream()
                 .map(giftCodeDTO -> {
                     GiftCode giftCode;
@@ -73,7 +71,6 @@ public class GiftCardServiceImpl implements GiftCardService {
         giftCard.setPrice(giftCardDTO.price());
         giftCard.setTags(giftCardDTO.tags());
         giftCard.setVisible(giftCardDTO.visible());
-        giftCard.setImages(giftCardDTO.images().stream().map(Image::valueOf).toList());
         giftCard.setGiftCompany(giftCompanyRepository.findById(giftCardDTO.companyId()));
 
         giftCard.setGiftCodes(giftCardDTO.giftCodes().stream()

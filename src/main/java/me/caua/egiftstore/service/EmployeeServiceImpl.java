@@ -98,6 +98,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public EmployeeResponseDTO findByCpf(String cpf) {
+        validateEmployeeNotExistsByCpf(cpf);
+        return EmployeeResponseDTO.valueOf(employeeRepository.findByCpf(cpf));
+    }
+
+    @Override
     public List<EmployeeResponseDTO> findAll() {
         return employeeRepository.listAll()
                 .stream()
@@ -114,17 +120,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public UserResponseDTO login(String email, String password) {
+        if (employeeRepository.findByEmailAndPass(email, password) == null)
+            throw new ValidationException("email and password", "employee not found");
         return UserResponseDTO.valueOf(employeeRepository.findByEmailAndPass(email, password).getUser());
     }
 
     public void validateEmployeeExists(Long id) {
         if (employeeRepository.findById(id) == null)
-            throw new ValidationException("id", "Employee não encontrado.");
+            throw new ValidationException("id", "employee not found.");
     }
 
     public void validateEmployeeExistsByCpf(String cpf) {
         if (employeeRepository.findByCpf(cpf) != null)
-            throw new ValidationException("cpf", "Já existe um Employee com este cpf.");
+            throw new ValidationException("cpf", "an employee with this cpf already exists.");
+    }
+
+    public void validateEmployeeNotExistsByCpf(String cpf) {
+        if (employeeRepository.findByCpf(cpf) == null)
+            throw new ValidationException("cpf", "employee not found");
     }
 
     public boolean checkUserNotExists(String cpf) {

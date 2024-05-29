@@ -18,8 +18,6 @@ public record GiftCardDTO(
         Long companyId,
         @NotNull(message = "tags cannot be null")
         List<String> tags,
-        @NotNull(message = "images cannot be null")
-        List<ImageDTO> images,
         @NotNull(message = "giftcodes cannot be null")
         List<GiftCodeDTO> giftCodes,
         @NotNull(message = "visible cannot be null")
@@ -48,11 +46,6 @@ public record GiftCardDTO(
     @Override
     public List<String> tags() {
         return tags;
-    }
-
-    @Override
-    public List<ImageDTO> images() {
-        return images;
     }
 
     @Override
