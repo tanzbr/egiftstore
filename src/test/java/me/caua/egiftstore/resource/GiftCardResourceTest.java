@@ -76,8 +76,8 @@ class GiftCardResourceTest {
                 new GiftCardDTO(
                         "Gift Card Google Editado",
                         "Gift Card para a Play Store Editado",
-                        40.0,
-                        1L,
+                        400.0,
+                        response.company().id(),
                         List.of("tag1", "tag2"),
                         List.of(giftCodeDTO, giftCodeDTO2),
                         true
@@ -94,6 +94,26 @@ class GiftCardResourceTest {
                 .statusCode(204);
 
         giftCardService.delete(response.id());
+    }
+
+    private GiftCardDTO getGiftCardDTO() {
+        GiftCodeDTO giftCodeDTO =
+                new GiftCodeDTO("codigoteste4", GiftState.AVAILABLE, null);
+        GiftCodeDTO giftCodeDTO2 =
+                new GiftCodeDTO("codigoteste5", GiftState.AVAILABLE, null);
+
+
+        GiftCardDTO giftCardDTO =
+                new GiftCardDTO(
+                        "Gift Card Google Editado2",
+                        "Gift Card para a Play Store Editado2",
+                        40.0,
+                        1L,
+                        List.of("tag1", "tag2"),
+                        List.of(giftCodeDTO, giftCodeDTO2),
+                        false
+                );
+        return giftCardDTO;
     }
 
     @Test
