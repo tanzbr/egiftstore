@@ -1,4 +1,4 @@
-package me.caua.egiftstore.dto.out;
+package me.caua.egiftstore.dto.user;
 
 import jakarta.validation.constraints.NotNull;
 import me.caua.egiftstore.model.Customer;

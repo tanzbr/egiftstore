@@ -1,7 +1,6 @@
-package me.caua.egiftstore.dto.out;
+package me.caua.egiftstore.dto.order;
 
-import me.caua.egiftstore.dto.in.OrderItemDTO;
-import me.caua.egiftstore.dto.in.PaymentDTO;
+import me.caua.egiftstore.dto.payment.PaymentResponseDTO;
 import me.caua.egiftstore.model.Order;
 
 import java.time.LocalDateTime;

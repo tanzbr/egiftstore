@@ -1,19 +1,18 @@
 package me.caua.egiftstore.resource;
 
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import me.caua.egiftstore.dto.in.AuthUserDTO;
-import me.caua.egiftstore.dto.out.UserResponseDTO;
+import me.caua.egiftstore.dto.auth.AuthUserDTO;
+import me.caua.egiftstore.dto.user.UserResponseDTO;
 import me.caua.egiftstore.service.CustomerService;
 import me.caua.egiftstore.service.EmployeeService;
 import me.caua.egiftstore.service.HashService;
 import me.caua.egiftstore.service.JwtService;
+import me.caua.egiftstore.validation.BeanValidationExceptionMapper;
 import me.caua.egiftstore.validation.ValidationException;
+import org.jboss.logging.Logger;
 
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -29,8 +28,13 @@ public class AuthResource {
     @Inject
     public JwtService jwtService;
 
+    private static final Logger LOG = Logger.getLogger(AuthResource.class);
+
     @POST
     public Response create(AuthUserDTO authUserDTO) {
+
+        LOG.infof("Executing user authentication: %s", authUserDTO.email());
+        LOG.debugf("DTO: %s", authUserDTO);
 
         String hash = hashService.getHashSenha(authUserDTO.password());
         UserResponseDTO user = null;

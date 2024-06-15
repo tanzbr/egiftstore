@@ -1,6 +1,6 @@
-package me.caua.egiftstore.dto.out;
+package me.caua.egiftstore.dto.order;
 
-import me.caua.egiftstore.model.GiftCard;
+import me.caua.egiftstore.dto.product.GiftCardResponseDTO;
 import me.caua.egiftstore.model.OrderItem;
 
 public record OrderItemResponseDTO(

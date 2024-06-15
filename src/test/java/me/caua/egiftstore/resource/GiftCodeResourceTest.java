@@ -3,16 +3,14 @@ package me.caua.egiftstore.resource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
-import me.caua.egiftstore.dto.in.GiftCardDTO;
-import me.caua.egiftstore.dto.in.GiftCodeDTO;
-import me.caua.egiftstore.dto.in.GiftCompanyDTO;
-import me.caua.egiftstore.dto.out.GiftCardResponseDTO;
-import me.caua.egiftstore.dto.out.GiftCodeResponseDTO;
-import me.caua.egiftstore.dto.out.GiftCompanyResponseDTO;
+import me.caua.egiftstore.dto.product.GiftCardDTO;
+import me.caua.egiftstore.dto.product.GiftCodeDTO;
+import me.caua.egiftstore.dto.product.GiftCardResponseDTO;
+import me.caua.egiftstore.dto.product.GiftCodeResponseDTO;
+import me.caua.egiftstore.dto.product.GiftCompanyResponseDTO;
 import me.caua.egiftstore.enums.GiftState;
 import me.caua.egiftstore.service.GiftCardService;
 import me.caua.egiftstore.service.GiftCodeService;
-import me.caua.egiftstore.service.GiftCompanyService;
 import me.caua.egiftstore.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +27,6 @@ class GiftCodeResourceTest {
     GiftCodeService giftCodeService;
     @Inject
     GiftCardService giftCardService;
-    @Inject
-    GiftCompanyService giftCompanyService;
     @Inject
     TestUtils testUtils;
     @Test

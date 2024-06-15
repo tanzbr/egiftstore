@@ -1,4 +1,4 @@
-package me.caua.egiftstore.dto.out;
+package me.caua.egiftstore.dto.product;
 
 import me.caua.egiftstore.model.GiftCard;
 

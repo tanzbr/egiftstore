@@ -3,7 +3,7 @@ package me.caua.egiftstore.service;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import me.caua.egiftstore.dto.out.UserResponseDTO;
+import me.caua.egiftstore.dto.user.UserResponseDTO;
 import me.caua.egiftstore.model.Employee;
 import me.caua.egiftstore.repository.EmployeeRepository;
 
@@ -18,7 +18,7 @@ public class JwtServiceImpl implements JwtService {
     @Inject
     public EmployeeRepository employeeRepository;
 
-    private static final Duration EXPIRATION_TIME = Duration.ofHours(24);
+    private static final Duration EXPIRATION_TIME = Duration.ofDays(7);
 
     @Override
     public String generateJwt(UserResponseDTO user, int type) {

@@ -10,7 +10,7 @@ public class GiftCode extends DefaultEntity {
     private String code;
     @Enumerated
     private GiftState giftState;
-    @ManyToOne(cascade = CascadeType.REFRESH) @JoinColumn(name = "giftcard_id")
+    @ManyToOne(cascade = CascadeType.ALL) @JoinColumn(name = "giftcard_id")
     private GiftCard giftCard;
 
     public GiftCard getGiftCard() {

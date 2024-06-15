@@ -2,19 +2,22 @@ package me.caua.egiftstore.utils;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import me.caua.egiftstore.dto.in.EmployeeDTO;
-import me.caua.egiftstore.dto.in.GiftCompanyDTO;
-import me.caua.egiftstore.dto.in.UserDTO;
-import me.caua.egiftstore.dto.out.GiftCompanyResponseDTO;
-import me.caua.egiftstore.dto.out.UserResponseDTO;
+import me.caua.egiftstore.dto.user.EmployeeDTO;
+import me.caua.egiftstore.dto.product.GiftCompanyDTO;
+import me.caua.egiftstore.dto.user.UserDTO;
+import me.caua.egiftstore.dto.product.GiftCompanyResponseDTO;
+import me.caua.egiftstore.dto.user.UserResponseDTO;
 import me.caua.egiftstore.enums.Role;
 import me.caua.egiftstore.repository.EmployeeRepository;
 import me.caua.egiftstore.service.EmployeeService;
 import me.caua.egiftstore.service.GiftCompanyService;
 import me.caua.egiftstore.service.HashService;
 import me.caua.egiftstore.service.JwtService;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @ApplicationScoped
 public class TestUtils {
@@ -30,6 +33,8 @@ public class TestUtils {
     @Inject
     GiftCompanyService giftCompanyService;
 
+    List<String> cache = new ArrayList<>();
+
     public String getAuth() {
         UserResponseDTO userResponseDTO = null;
 
@@ -40,7 +45,6 @@ public class TestUtils {
                     "Darius Tanz",
                     "111-TESTE",
                     "tanz@gmail.com",
-                    "tanz",
                     "admin",
                     false,
                     LocalDate.now()
@@ -55,7 +59,6 @@ public class TestUtils {
             )).user();
         }
 
-        System.out.println(userResponseDTO);
         return jwtService.generateJwt(userResponseDTO, 0);
     }
 
@@ -64,6 +67,20 @@ public class TestUtils {
                 = new GiftCompanyDTO("Teste", "111.111.111");
 
         return giftCompanyService.create(giftCompanyDTO);
+    }
+
+    public String generateRandom() {
+        int length = 5;
+        boolean useLetters = true;
+        boolean useNumbers = false;
+        String generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
+
+        while (cache.contains(generatedString)) {
+            generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
+        }
+        cache.add(generatedString);
+
+        return "devtest-"+generatedString;
     }
 
 }

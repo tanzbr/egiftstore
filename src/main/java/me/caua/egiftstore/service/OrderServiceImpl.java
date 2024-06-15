@@ -3,9 +3,9 @@ package me.caua.egiftstore.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import me.caua.egiftstore.dto.in.OrderDTO;
-import me.caua.egiftstore.dto.in.OrderItemDTO;
-import me.caua.egiftstore.dto.out.OrderResponseDTO;
+import me.caua.egiftstore.dto.order.OrderDTO;
+import me.caua.egiftstore.dto.order.OrderItemDTO;
+import me.caua.egiftstore.dto.order.OrderResponseDTO;
 import me.caua.egiftstore.enums.GiftState;
 import me.caua.egiftstore.model.*;
 import me.caua.egiftstore.repository.CustomerRepository;
@@ -36,7 +36,9 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderDate(orderDTO.orderDate());
         order.setCustomer(customerRepository.findById(orderDTO.customerId()));
-        order.setPayment(new Payment(orderDTO.paymentDTO().totalPrice(), orderDTO.paymentDTO().paymentStatus()));
+        order.setPayment(new Payment(orderDTO.paymentDTO().totalPrice(), orderDTO.paymentDTO().paymentStatus(), orderDTO.paymentDTO().paymentGateway()));
+
+        order.getPayment().setPaymentLink("https://"+orderDTO.paymentDTO().paymentGateway().name().toLowerCase()+".com/link-de-pagamento");
 
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -71,16 +73,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderResponseDTO findById(Long id) {
         return OrderResponseDTO.valueOf(orderRepository.findById(id));
     }
 
     @Override
+    @Transactional
     public List<OrderResponseDTO> findAll() {
         return orderRepository.findAll().stream().map(OrderResponseDTO::valueOf).toList();
     }
 
     @Override
+    @Transactional
     public List<OrderResponseDTO> findByCustomerId(Long customerId) {
         return orderRepository.findByCustomer(customerId).stream().map(OrderResponseDTO::valueOf).toList();
     }

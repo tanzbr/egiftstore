@@ -17,6 +17,10 @@ public class CustomerRepository implements PanacheRepository<Customer> {
         return find("user.cpf = ?1", cpf).firstResult();
     }
 
+    public Customer findByEmail(String email) {
+        return find("UPPER(user.email) = UPPER(?1)", email).firstResult();
+    }
+
     public Customer findByEmailAndPass(String email, String password) {
         return find("UPPER(user.email) = UPPER(?1) AND user.password = ?2", email, password).firstResult();
     }

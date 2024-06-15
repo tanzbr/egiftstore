@@ -4,9 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import me.caua.egiftstore.dto.in.EmployeeDTO;
-import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
-import me.caua.egiftstore.dto.out.UserResponseDTO;
+import me.caua.egiftstore.dto.user.EmployeeDTO;
+import me.caua.egiftstore.dto.user.EmployeeResponseDTO;
+import me.caua.egiftstore.dto.user.UserResponseDTO;
 import me.caua.egiftstore.model.Employee;
 import me.caua.egiftstore.model.User;
 import me.caua.egiftstore.repository.EmployeeRepository;
@@ -49,7 +49,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         user.setPassword(hashService.getHashSenha(employeeDTO.user().password()));
         user.setBirthDate(employeeDTO.user().birthDate());
         user.setTwoFactor(employeeDTO.user().twoFactor());
-        user.setUsername(employeeDTO.user().username());
         employee.setUser(user);
 
         employeeRepository.persist(employee);
@@ -80,7 +79,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         user.setPassword(hashService.getHashSenha(employeeDTO.user().password()));
         user.setBirthDate(employeeDTO.user().birthDate());
         user.setTwoFactor(employeeDTO.user().twoFactor());
-        user.setUsername(employeeDTO.user().username());
         employee.setUser(user);
     }
 
@@ -132,11 +130,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     public void validateEmployeeExistsByCpf(String cpf) {
         if (employeeRepository.findByCpf(cpf) != null)
-            throw new ValidationException("cpf", "an employee with this cpf already exists.");
+            throw new ValidationException("cpf", "an employee with this email already exists.");
     }
 
     public void validateEmployeeNotExistsByCpf(String cpf) {
         if (employeeRepository.findByCpf(cpf) == null)
+            throw new ValidationException("cpf", "employee not found");
+    }
+
+    public void validateEmployeeNotExistsByEmail(String email) {
+        if (employeeRepository.findByEmail(email) == null)
             throw new ValidationException("cpf", "employee not found");
     }
 

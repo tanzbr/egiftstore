@@ -1,4 +1,4 @@
-package me.caua.egiftstore.dto.out;
+package me.caua.egiftstore.dto.user;
 
 import me.caua.egiftstore.enums.Role;
 import me.caua.egiftstore.model.Employee;

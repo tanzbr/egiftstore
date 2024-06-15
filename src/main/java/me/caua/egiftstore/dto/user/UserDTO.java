@@ -1,4 +1,4 @@
-package me.caua.egiftstore.dto.in;
+package me.caua.egiftstore.dto.user;
 
 import jakarta.validation.constraints.*;
 
@@ -11,8 +11,6 @@ public record UserDTO(
         String cpf,
         @Email(message = "email needs to be an valid email.")
         String email,
-        @NotBlank(message = "username cannot be null or empty.")
-        String username,
         @NotBlank(message = "password cannot be null or empty.") @Size(message = "the password must be at least 6 characters long")
         String password,
         @NotNull(message = "twofactor cannot be null")

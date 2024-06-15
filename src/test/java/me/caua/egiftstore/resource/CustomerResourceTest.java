@@ -3,14 +3,10 @@ package me.caua.egiftstore.resource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
-import me.caua.egiftstore.dto.in.CustomerDTO;
-import me.caua.egiftstore.dto.in.EmployeeDTO;
-import me.caua.egiftstore.dto.in.UserDTO;
-import me.caua.egiftstore.dto.out.CustomerResponseDTO;
-import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
-import me.caua.egiftstore.enums.Role;
+import me.caua.egiftstore.dto.user.CustomerDTO;
+import me.caua.egiftstore.dto.user.UserDTO;
+import me.caua.egiftstore.dto.user.CustomerResponseDTO;
 import me.caua.egiftstore.service.CustomerService;
-import me.caua.egiftstore.service.EmployeeService;
 import me.caua.egiftstore.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 
@@ -33,9 +29,8 @@ class CustomerResourceTest {
         UserDTO userDTO =
                 new UserDTO(
                         "Cliente Teste",
-                        "111.111",
-                        "cliente@teste.com",
-                        "clienteteste",
+                        testUtils.generateRandom(),
+                        testUtils.generateRandom(),
                         "clienteteste",
                         true,
                         LocalDate.now()
@@ -60,15 +55,14 @@ class CustomerResourceTest {
 
     @Test
     public void updateTest() {
-        CustomerResponseDTO response = createFakeCustomer("111.111");
+        CustomerResponseDTO response = createFakeCustomer("teste-115");
 
         UserDTO userDTO =
                 new UserDTO(
                         "Usuário Teste Editado",
-                        "222.222",
-                        "editado@teste.com",
+                        "teste-113",
+                        "editado1@teste.com",
                         "usertesteeditado",
-                        "senhatesteeditado",
                         true,
                         LocalDate.now()
                 );
@@ -104,7 +98,7 @@ class CustomerResourceTest {
 
     @Test
     public void findByIdTest() {
-        CustomerResponseDTO response = createFakeCustomer("333.333");
+        CustomerResponseDTO response = createFakeCustomer("teste-116");
 
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
@@ -152,9 +146,8 @@ class CustomerResourceTest {
                 new UserDTO(
                         "Cliente2 Teste",
                         cpf,
-                        "cliente2@teste.com",
+                        "cliente3@teste.com",
                         "cliente2teste",
-                        "senhateste2",
                         true,
                         LocalDate.now()
                 );

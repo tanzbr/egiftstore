@@ -1,6 +1,5 @@
-package me.caua.egiftstore.dto.in;
+package me.caua.egiftstore.dto.auth;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 

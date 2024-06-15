@@ -1,4 +1,4 @@
-package me.caua.egiftstore.dto.out;
+package me.caua.egiftstore.dto.user;
 
 import me.caua.egiftstore.model.User;
 
@@ -9,7 +9,6 @@ public record UserResponseDTO(
         String name,
         String cpf,
         String email,
-        String username,
         Boolean twoFactor,
         LocalDate birthDate
 ) {
@@ -19,7 +18,6 @@ public record UserResponseDTO(
                 user.getName(),
                 user.getCpf(),
                 user.getEmail(),
-                user.getUsername(),
                 user.getTwoFactor(),
                 user.getBirthDate());
     }

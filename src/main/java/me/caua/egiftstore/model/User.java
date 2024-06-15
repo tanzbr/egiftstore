@@ -16,8 +16,6 @@ public class User extends DefaultEntity {
     @Column()
     private String email;
     @Column()
-    private String username;
-    @Column()
     private String password;
     @Column()
     private Boolean twoFactor;
@@ -27,11 +25,10 @@ public class User extends DefaultEntity {
     public User() {
     }
 
-    public User(String name, String cpf, String email, String username, String password, Boolean twoFactor, LocalDate birthDate) {
+    public User(String name, String cpf, String email, String password, Boolean twoFactor, LocalDate birthDate) {
         this.name = name;
         this.cpf = cpf;
         this.email = email;
-        this.username = username;
         this.password = password;
         this.twoFactor = twoFactor;
         this.birthDate = birthDate;
@@ -59,14 +56,6 @@ public class User extends DefaultEntity {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {

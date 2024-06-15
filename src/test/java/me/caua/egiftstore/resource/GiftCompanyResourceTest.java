@@ -1,26 +1,13 @@
 package me.caua.egiftstore.resource;
 
 import io.quarkus.test.junit.QuarkusTest;
-import io.restassured.http.Header;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
-import me.caua.egiftstore.dto.in.EmployeeDTO;
-import me.caua.egiftstore.dto.in.GiftCompanyDTO;
-import me.caua.egiftstore.dto.in.UserDTO;
-import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
-import me.caua.egiftstore.dto.out.GiftCompanyResponseDTO;
-import me.caua.egiftstore.dto.out.UserResponseDTO;
-import me.caua.egiftstore.enums.Role;
-import me.caua.egiftstore.repository.EmployeeRepository;
-import me.caua.egiftstore.repository.UserRepository;
-import me.caua.egiftstore.service.EmployeeService;
+import me.caua.egiftstore.dto.product.GiftCompanyDTO;
+import me.caua.egiftstore.dto.product.GiftCompanyResponseDTO;
 import me.caua.egiftstore.service.GiftCompanyService;
-import me.caua.egiftstore.service.HashService;
-import me.caua.egiftstore.service.JwtService;
 import me.caua.egiftstore.utils.TestUtils;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDate;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.hasItem;

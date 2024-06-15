@@ -3,9 +3,9 @@ package me.caua.egiftstore.resource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
-import me.caua.egiftstore.dto.in.EmployeeDTO;
-import me.caua.egiftstore.dto.in.UserDTO;
-import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
+import me.caua.egiftstore.dto.user.EmployeeDTO;
+import me.caua.egiftstore.dto.user.UserDTO;
+import me.caua.egiftstore.dto.user.EmployeeResponseDTO;
 import me.caua.egiftstore.enums.Role;
 import me.caua.egiftstore.service.EmployeeService;
 import me.caua.egiftstore.utils.TestUtils;
@@ -30,10 +30,9 @@ class EmployeeResourceTest {
         UserDTO userDTO =
                 new UserDTO(
                         "Usuário Teste",
-                        "111.111",
-                        "teste@teste.com",
+                        testUtils.generateRandom(),
+                        testUtils.generateRandom(),
                         "userteste",
-                        "senhateste",
                         true,
                         LocalDate.now()
                 );
@@ -60,7 +59,7 @@ class EmployeeResourceTest {
 
     @Test
     public void updateTest() {
-        EmployeeResponseDTO response = createFakeEmployee("111.111");
+        EmployeeResponseDTO response = createFakeEmployee("111.112");
 
         UserDTO userDTO =
                 new UserDTO(
@@ -68,7 +67,6 @@ class EmployeeResourceTest {
                         "222.222",
                         "editado@teste.com",
                         "usertesteeditado",
-                        "senhatesteeditado",
                         true,
                         LocalDate.now()
                 );
@@ -173,7 +171,6 @@ class EmployeeResourceTest {
                         cpf,
                         "teste@teste.com",
                         "userteste",
-                        "senhateste",
                         true,
                         LocalDate.now()
                 );

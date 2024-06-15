@@ -3,12 +3,10 @@ package me.caua.egiftstore.resource;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
-import me.caua.egiftstore.dto.in.AuthUserDTO;
-import me.caua.egiftstore.dto.in.EmployeeDTO;
-import me.caua.egiftstore.dto.in.UserDTO;
-import me.caua.egiftstore.dto.out.CustomerResponseDTO;
-import me.caua.egiftstore.dto.out.EmployeeResponseDTO;
+import me.caua.egiftstore.dto.auth.AuthUserDTO;
+import me.caua.egiftstore.dto.user.*;
 import me.caua.egiftstore.enums.Role;
+import me.caua.egiftstore.service.CustomerService;
 import me.caua.egiftstore.service.EmployeeService;
 import me.caua.egiftstore.utils.TestUtils;
 import org.junit.jupiter.api.Test;
@@ -26,13 +24,16 @@ class AuthResourceTest {
     EmployeeService employeeService;
     @Inject
     TestUtils testUtils;
+    @Inject
+    CustomerService customerService;
 
     @Test
     public void authTestEmployee() {
+
         long id = createEmployee().id();
 
         AuthUserDTO authUserDTO = new AuthUserDTO(
-                "teste@teste.com",
+                "auth@teste.com",
                 "senhateste",
                 0
         );
@@ -48,13 +49,34 @@ class AuthResourceTest {
         employeeService.delete(id);
     }
 
+    @Test
+    public void authTestCustomer() {
+
+        long id = createCustomer().id();
+
+        AuthUserDTO authUserDTO = new AuthUserDTO(
+                "auth22@teste.com",
+                "senhateste2",
+                1
+        );
+
+        given()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(authUserDTO)
+                .when()
+                .post("/auth")
+                .then()
+                .statusCode(200);
+
+        customerService.delete(id);
+    }
+
     private EmployeeResponseDTO createEmployee() {
         UserDTO userDTO =
                 new UserDTO(
                         "Usuário Teste",
-                        "111.111",
-                        "teste@teste.com",
-                        "userteste",
+                        "teste-111",
+                        "auth@teste.com",
                         "senhateste",
                         true,
                         LocalDate.now()
@@ -72,7 +94,22 @@ class AuthResourceTest {
         return employeeService.create(employeeDTO);
     }
 
-//    private CustomerResponseDTO getCustomer() {
-//
-//    }
+    public CustomerResponseDTO createCustomer() {
+        UserDTO userDTO =
+                new UserDTO(
+                        "Cliente2 Teste",
+                        testUtils.generateRandom(),
+                        "auth22@teste.com",
+                        "senhateste2",
+                        true,
+                        LocalDate.now()
+                );
+
+        CustomerDTO customerDTO = new CustomerDTO(
+                true,
+                userDTO
+        );
+
+        return customerService.create(customerDTO);
+    }
 }

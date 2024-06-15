@@ -4,9 +4,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
-import me.caua.egiftstore.dto.in.CustomerDTO;
-import me.caua.egiftstore.dto.out.CustomerResponseDTO;
-import me.caua.egiftstore.dto.out.UserResponseDTO;
+import me.caua.egiftstore.dto.user.CustomerDTO;
+import me.caua.egiftstore.dto.user.CustomerResponseDTO;
+import me.caua.egiftstore.dto.user.UserResponseDTO;
 import me.caua.egiftstore.model.Customer;
 import me.caua.egiftstore.model.User;
 import me.caua.egiftstore.repository.CustomerRepository;
@@ -29,6 +29,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     public CustomerResponseDTO create(@Valid CustomerDTO customerDTO) {
         validateCustomerExistsByCpf(customerDTO.userDTO().cpf());
+        validateCustomerExistsByEmail(customerDTO.userDTO().email());
 
         Customer customer = new Customer();
         customer.setAcceptMarketing(customerDTO.acceptMarketing());
@@ -46,7 +47,6 @@ public class CustomerServiceImpl implements CustomerService {
         user.setPassword(hashService.getHashSenha(customerDTO.userDTO().password()));
         user.setBirthDate(customerDTO.userDTO().birthDate());
         user.setTwoFactor(customerDTO.userDTO().twoFactor());
-        user.setUsername(customerDTO.userDTO().username());
         customer.setUser(user);
 
         customerRepository.persist(customer);
@@ -75,7 +75,6 @@ public class CustomerServiceImpl implements CustomerService {
         user.setPassword(hashService.getHashSenha(customerDTO.userDTO().password()));
         user.setBirthDate(customerDTO.userDTO().birthDate());
         user.setTwoFactor(customerDTO.userDTO().twoFactor());
-        user.setUsername(customerDTO.userDTO().username());
         customer.setUser(user);
     }
 
@@ -122,6 +121,11 @@ public class CustomerServiceImpl implements CustomerService {
     public void validateCustomerExistsByCpf(String cpf) {
         if (customerRepository.findByCpf(cpf) != null)
             throw new ValidationException("cpf", "a Customer with this cpf already exists.");
+    }
+
+    public void validateCustomerExistsByEmail(String email) {
+        if (customerRepository.findByEmail(email) != null)
+            throw new ValidationException("cpf", "a Customer with this email already exists.");
     }
 
     public boolean checkUserNotExists(String cpf) {

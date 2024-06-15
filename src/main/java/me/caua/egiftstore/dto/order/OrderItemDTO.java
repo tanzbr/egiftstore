@@ -1,14 +1,8 @@
-package me.caua.egiftstore.dto.in;
+package me.caua.egiftstore.dto.order;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import me.caua.egiftstore.model.OrderItem;
-import me.caua.egiftstore.model.Payment;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public record OrderItemDTO(
         @PositiveOrZero(message = "price cannot be negative")

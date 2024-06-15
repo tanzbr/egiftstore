@@ -33,7 +33,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
-class OrderResourceTest {
+class PaymentResourceTest {
 
     @Inject
     GiftCardService giftCardService;
@@ -45,15 +45,22 @@ class OrderResourceTest {
     TestUtils testUtils;
 
     @Test
-    public void createTest() {
+    public void updateTest() {
+        OrderResponseDTO orderResponseDTO = orderService.create(createFakeOrder());
+
+        PaymentDTO paymentDTO = new PaymentDTO(20.0, PaymentGateway.MERCADOPAGO, PaymentStatus.REFUNDED);
+
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(createFakeOrder())
+                .body(paymentDTO)
                 .when()
-                .post("/order")
+                .pathParam("id", orderResponseDTO.paymentDTO().id())
+                .put("/payment/{id}")
                 .then()
-                .statusCode(201);
+                .statusCode(204);
+
+        orderService.delete(orderResponseDTO.id());
     }
 
     @Test
@@ -61,41 +68,25 @@ class OrderResourceTest {
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
-                .get("/order")
+                .get("/payment")
                 .then()
                 .statusCode(200);
     }
 
     @Test
     public void findByIdTest() {
-        OrderResponseDTO response = orderService.create(createFakeOrder());
+        OrderResponseDTO orderResponseDTO = orderService.create(createFakeOrder());
 
         given()
                 .header("Authorization", "Bearer " + testUtils.getAuth())
                 .when()
-                .pathParam("id", response.id())
-                .get("/order/{id}")
+                .pathParam("id", orderResponseDTO.paymentDTO().id())
+                .get("/payment/{id}")
                 .then()
                 .statusCode(200)
-                .body("id", is(response.id().intValue()));
+                .body("id", is(orderResponseDTO.paymentDTO().id().intValue()));
 
-        orderService.delete(response.id());
-    }
-
-    @Test
-    public void findByCustomerTest() {
-        OrderResponseDTO response = orderService.create(createFakeOrder());
-
-        given()
-                .header("Authorization", "Bearer " + testUtils.getAuth())
-                .when()
-                .pathParam("id", response.customerId())
-                .get("/order/customer/{id}")
-                .then()
-                .statusCode(200)
-                .body("customerId", hasItem(response.customerId().intValue()));
-
-        orderService.delete(response.id());
+        orderService.delete(orderResponseDTO.id());
     }
 
     private OrderDTO createFakeOrder() {

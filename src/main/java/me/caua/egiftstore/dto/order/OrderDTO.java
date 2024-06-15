@@ -1,9 +1,7 @@
-package me.caua.egiftstore.dto.in;
+package me.caua.egiftstore.dto.order;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
-import me.caua.egiftstore.model.OrderItem;
-import me.caua.egiftstore.model.Payment;
+import me.caua.egiftstore.dto.payment.PaymentDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
