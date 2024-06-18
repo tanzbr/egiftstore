@@ -3,6 +3,7 @@ package me.caua.egiftstore.service;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.core.SecurityContext;
 import me.caua.egiftstore.dto.order.OrderDTO;
 import me.caua.egiftstore.dto.order.OrderItemDTO;
 import me.caua.egiftstore.dto.order.OrderResponseDTO;
@@ -88,6 +89,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public List<OrderResponseDTO> findByCustomerId(Long customerId) {
         return orderRepository.findByCustomer(customerId).stream().map(OrderResponseDTO::valueOf).toList();
+    }
+
+    @Override
+    public List<OrderResponseDTO> findByCustomerEmail(SecurityContext securityContext) {
+        return orderRepository.findByCustomerEmail(securityContext.getUserPrincipal().getName()).stream().map(OrderResponseDTO::valueOf).toList();
     }
 
     @Override

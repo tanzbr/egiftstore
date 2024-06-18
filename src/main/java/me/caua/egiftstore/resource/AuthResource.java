@@ -27,7 +27,6 @@ public class AuthResource {
     public CustomerService customerService;
     @Inject
     public JwtService jwtService;
-
     private static final Logger LOG = Logger.getLogger(AuthResource.class);
 
     @POST

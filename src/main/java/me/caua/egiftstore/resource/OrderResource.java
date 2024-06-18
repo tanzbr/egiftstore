@@ -4,8 +4,10 @@ import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import me.caua.egiftstore.dto.order.OrderDTO;
 import me.caua.egiftstore.service.OrderService;
 import org.jboss.logging.Logger;
@@ -54,6 +56,19 @@ public class OrderResource {
         return Response
                 .status(Response.Status.OK)
                 .entity(orderService.findById(id))
+                .build();
+    }
+
+    @RolesAllowed({"CUSTOMER", "SALES", "MANAGER", "CEO"})
+    @GET
+    @Path("/findByMe")
+    public Response findByCustomerEmail(@Context SecurityContext securityContext) {
+
+        LOG.infof("Executing order search by customer email");
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(orderService.findByCustomerEmail(securityContext))
                 .build();
     }
 

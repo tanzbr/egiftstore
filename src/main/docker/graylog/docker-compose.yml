@@ -10,6 +10,16 @@ services:
       - "mongodb_data:/data/db"
     restart: "on-failure"
 
+  opensearch:
+    image: "opensearchproject/opensearch:2.13.0"
+    hostname: "opensearch"
+    environment:
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: "admin"
+    ports:
+      - "9200:9200/tcp"
+    volumes:
+      - "/var/lib/opensearch"
+    restart: "on-failure"
   # For DataNode setup, graylog starts with a preflight UI, this is a change from just using OpenSearch/Elasticsearch.
   # Please take a look at the README at the top of this repo or the regular docs for more info.
   datanode:
@@ -17,8 +27,8 @@ services:
     hostname: "datanode"
     environment:
       GRAYLOG_DATANODE_NODE_ID_FILE: "/var/lib/graylog-datanode/node-id"
-      GRAYLOG_DATANODE_PASSWORD_SECRET: "${GRAYLOG_PASSWORD_SECRET:?Please configure GRAYLOG_PASSWORD_SECRET in the .env file}"
-      GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "${GRAYLOG_ROOT_PASSWORD_SHA2:?Please configure GRAYLOG_ROOT_PASSWORD_SHA2 in the .env file}"
+      GRAYLOG_DATANODE_PASSWORD_SECRET: "cnFZE9s7sjzd9JIt15qxbZfiJ35zUz6QcnFZE9s7sjzd9JIt15qxbZfiJ35zUz6Q"
+      GRAYLOG_DATANODE_ROOT_PASSWORD_SHA2: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
       GRAYLOG_DATANODE_MONGODB_URI: "mongodb://mongodb:27017/graylog"
     ulimits:
       memlock:
@@ -29,7 +39,7 @@ services:
         hard: 65536
     ports:
       - "8999:8999/tcp"   # DataNode API
-      - "9200:9200/tcp"
+      #- "9200:9200/tcp"
       - "9300:9300/tcp"
     volumes:
       - "graylog-datanode:/var/lib/graylog-datanode"
@@ -44,8 +54,8 @@ services:
     entrypoint: "/usr/bin/tini --  /docker-entrypoint.sh"
     environment:
       GRAYLOG_NODE_ID_FILE: "/usr/share/graylog/data/data/node-id"
-      GRAYLOG_PASSWORD_SECRET: "${GRAYLOG_PASSWORD_SECRET:?Please configure GRAYLOG_PASSWORD_SECRET in the .env file}"
-      GRAYLOG_ROOT_PASSWORD_SHA2: "${GRAYLOG_ROOT_PASSWORD_SHA2:?Please configure GRAYLOG_ROOT_PASSWORD_SHA2 in the .env file}"
+      GRAYLOG_PASSWORD_SECRET: "cnFZE9s7sjzd9JIt15qxbZfiJ35zUz6QcnFZE9s7sjzd9JIt15qxbZfiJ35zUz6Q"
+      GRAYLOG_ROOT_PASSWORD_SHA2: "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
       GRAYLOG_HTTP_BIND_ADDRESS: "0.0.0.0:9000"
       GRAYLOG_HTTP_EXTERNAL_URI: "http://localhost:9000/"
       GRAYLOG_MONGODB_URI: "mongodb://mongodb:27017/graylog"

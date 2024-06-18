@@ -19,6 +19,7 @@ import me.caua.egiftstore.enums.PaymentGateway;
 import me.caua.egiftstore.enums.PaymentStatus;
 import me.caua.egiftstore.service.CustomerService;
 import me.caua.egiftstore.service.GiftCardService;
+import me.caua.egiftstore.service.JwtService;
 import me.caua.egiftstore.service.OrderService;
 import me.caua.egiftstore.utils.TestUtils;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,8 @@ class OrderResourceTest {
     CustomerService customerService;
     @Inject
     TestUtils testUtils;
+    @Inject
+    JwtService jwtService;
 
     @Test
     public void createTest() {
@@ -100,7 +103,7 @@ class OrderResourceTest {
 
     private OrderDTO createFakeOrder() {
         String identifier = testUtils.generateRandom();
-        CustomerResponseDTO customer = createFakeCustomer(identifier);
+        CustomerResponseDTO customer = createFakeCustomer();
         GiftCardResponseDTO giftcard = createFakeGiftCard();
 
         List<OrderItemDTO> orderItems = new ArrayList<>();
@@ -119,7 +122,7 @@ class OrderResourceTest {
         );
     }
 
-    public CustomerResponseDTO createFakeCustomer(String cpf) {
+    public CustomerResponseDTO createFakeCustomer() {
         String identifier = testUtils.generateRandom();
         UserDTO userDTO =
                 new UserDTO(
